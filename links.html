@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BarberLabel - Seu App White Label</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --accent-color: #d4af37; 
+            --accent-rgb: 212, 175, 55; 
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f5f5f5;
+            --text-muted: #999;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100dvh; 
+            width: 100vw;
+            overflow: hidden; 
+            touch-action: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(circle at top, #2a2a2a 0%, #121212 80%);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .tree-container {
+            width: 100%;
+            height: 100%;
+            max-width: 450px;
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            padding: 2vh 20px;
+            animation: fadeIn 0.8s ease-out;
+            gap: 2vh;
+        }
+
+        .profile-section {
+            text-align: center;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 0.5vh; 
+        }
+
+        .avatar-container {
+            position: relative;
+            height: 14vh; 
+            width: 14vh;
+            max-height: 110px;
+            max-width: 110px;
+            margin-bottom: 2.5vh; 
+            cursor: pointer;
+            -webkit-user-drag: none;
+        }
+
+        .avatar-ring {
+            position: absolute;
+            top: -4px; left: -4px; right: -4px; bottom: -4px;
+            border-radius: 50%;
+            background: transparent;
+            border: 3px solid var(--accent-color); 
+            animation: pulseRingGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseRingGlow {
+            0%, 100% {
+                opacity: 0.5;
+                transform: scale(1);
+                box-shadow: 0 0 5px rgba(var(--accent-rgb), 0.2), inset 0 0 5px rgba(var(--accent-rgb), 0.2);
+            }
+            50% {
+                opacity: 1; 
+                transform: scale(1.08); 
+                box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.6), inset 0 0 10px rgba(var(--accent-rgb), 0.4); 
+            }
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--bg-dark);
+            position: relative;
+            z-index: 2;
+            background: #000;
+            pointer-events: none;
+        }
+
+        .brand-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.3rem, 3.2vh, 1.8rem);
+            color: #fff;
+            line-height: 1;
+            margin-bottom: 0.5vh;
+        }
+
+        .verified-badge { color: var(--accent-color); font-size: 0.6em; vertical-align: middle; }
+
+        .brand-bio {
+            font-size: clamp(0.75rem, 1.8vh, 0.9rem);
+            color: var(--text-muted);
+            font-weight: 300;
+            line-height: 1.3;
+            max-width: 90%;
+        }
+
+        .links-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.2vh;
+        }
+
+        .link-btn {
+            position: relative;
+            width: 100%;
+            height: 6vh;
+            max-height: 55px;
+            min-height: 42px;
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-weight: 500;
+            font-size: clamp(0.8rem, 1.9vh, 0.95rem);
+            padding: 0 15px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            user-select: none; 
+        }
+
+        .link-btn i {
+            position: absolute;
+            left: 20px;
+            font-size: 1.1em;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.15);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .link-btn:hover i {
+            color: var(--accent-color);
+            transform: translateX(3px);
+        }
+
+        .link-btn:active { transform: scale(0.98) translateY(0px); }
+
+        .btn-featured {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: #000;
+            font-weight: 700;
+            animation: pulseGlow 2s infinite;
+        }
+        .btn-featured i { color: #000; }
+        
+        .btn-featured:hover {
+             background: #e5bd3d;
+             transform: translateY(-3px) scale(1.02);
+             box-shadow: 0 6px 15px rgba(var(--accent-rgb), 0.3);
+        }
+        .btn-featured:hover i { color: #000; transform: translateX(3px); }
+
+
+        .footer-section {
+            flex-shrink: 0;
+            text-align: center;
+            margin-top: 1vh; 
+            width: 100%;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 1vh;
+        }
+
+        .social-icon {
+            color: var(--text-muted);
+            font-size: clamp(1.4rem, 3vh, 1.8rem);
+            transition: 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .social-icon:hover { 
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-copy {
+            font-size: 0.65rem;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .share-float {
+            position: absolute;
+            top: 2vh; right: 5vw;
+            font-size: 1.2rem;
+            color: #fff;
+            opacity: 0.5;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.3s;
+        }
+        .share-float:hover { opacity: 1; transform: scale(1.1); color: var(--accent-color); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0); }
+            100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0); }
+        }
+
+        @media (max-height: 600px) {
+            .tree-container { gap: 1.5vh; }
+            .avatar-container { height: 12vh; width: 12vh; }
+            .link-btn { height: 50px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="share-float" onclick="sharePage()"><i class="fas fa-share-alt"></i></div>
+
+    <div class="tree-container">
+        
+        <div class="profile-section">
+            <div class="avatar-container">
+                <div class="avatar-ring"></div>
+                <img src="https://i.imgur.com/E9a5Jnp.png" alt="BarberLabel" class="avatar-img">
+            </div>
+            <h1 class="brand-title">BarberLabel <i class="fas fa-check-circle verified-badge"></i></h1>
+            <p class="brand-bio">O aplicativo perfeito para sua barbearia!</p>
+        </div>
+
+        <div class="links-wrapper">
+            <a href="https://barber-label.vercel.app/" target="_blank" class="link-btn btn-featured">
+                <i class="fas fa-mobile-alt"></i> VER DEMONSTRAÇÃO
+            </a>
+            
+            <a href="https://wa.me/5547988147123?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20um%20consultor%20sobre%20o%20BarberLabel." target="_blank" class="link-btn">
+                <i class="fab fa-whatsapp"></i> Falar com Consultor
+            </a>
+
+            <a href="https://barber-label.vercel.app/" target="_blank" class="link-btn">
+                <i class="fas fa-list-ul"></i> Planos e Preços
+            </a>
+            
+            <a href="https://barber-label.vercel.app/" target="_blank" class="link-btn">
+                <i class="fas fa-rocket"></i> Como Funciona?
+            </a>
+        </div>
+
+        <div class="footer-section">
+            <div class="social-row">
+                <a href="https://www.instagram.com/usebarberlabel/" target="_blank" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+            <div class="footer-copy">BarberLabel © 2026</div>
+        </div>
+
+    </div>
+
+    <script>
+        function sharePage() {
+            if (navigator.share) {
+                navigator.share({ title: 'BarberLabel', url: window.location.href }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => alert("Link copiado!"));
+            }
+        }
+
+        document.addEventListener('contextmenu', event => {
+            event.preventDefault();
+        });
+
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) { return false; } 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; } 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } 
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } 
+        }
+    </script>
+</body>
+</html>
