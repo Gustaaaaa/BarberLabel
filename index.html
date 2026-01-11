@@ -133,23 +133,25 @@
             background-color: rgba(239, 68, 68, 0.1) !important;
         }
 
-        /* --- FAQ STYLES (CORREÇÃO DEFINITIVA SEM OPACIDADE) --- */
+        /* --- FAQ STYLES --- */
         .faq-item {
-            border: 1px solid rgba(255,255,255,0.1);
-            background-color: #050505;
-            border-radius: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            background-color: #0f0f0f;
+            border-radius: 12px;
             overflow: hidden;
-            transition: border-color 0.3s ease, background-color 0.3s ease;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
         }
         .faq-item.active {
             border-color: #d4af37;
-            background-color: #161616;
+            background-color: #121212;
+            box-shadow: 0 10px 30px -10px rgba(212,175,55,0.1);
         }
-        .faq-wrapper {
-            /* Wrapper controla a altura */
+        .faq-answer {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #1a1a1a;
         }
         .faq-icon {
             transition: transform 0.3s ease;
@@ -158,13 +160,18 @@
             transform: rotate(180deg);
             color: #d4af37;
         }
+
+        /* --- MOBILE MENU DRAWER --- */
+        #mobile-menu-drawer {
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+            height: 100dvh; 
+        }
     </style>
 </head>
 <body class="bg-barber-dark text-barber-light font-sans antialiased selection:bg-barber-gold selection:text-black relative">
 
     <div id="entry-popup" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-500" onclick="closePopup()"></div>
-        
         <div class="relative bg-barber-card border border-barber-gold/30 rounded-2xl p-8 max-w-md w-full shadow-2xl overflow-hidden animate-fadeScale">
             <button onclick="closePopup()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
             <div class="text-center">
@@ -183,7 +190,7 @@
         </div>
     </div>
 
-    <nav id="navbar" class="fixed w-full z-50 bg-transparent backdrop-blur-sm transition-all duration-500 border-b border-transparent">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 border-b border-white/5 bg-[#050505]/80 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 md:h-24 items-center">
                 <div id="logo-top" class="flex-shrink-0 flex items-center gap-3 cursor-pointer group z-50">
@@ -193,12 +200,12 @@
                 </div>
                 
                 <div class="hidden md:flex space-x-8 items-center font-medium text-xs uppercase tracking-[0.2em]">
-                    <a href="#whitelabel" class="text-gray-400 hover:text-white transition relative group py-2">White Label<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
-                    <a href="#funcionalidades" class="text-gray-400 hover:text-white transition relative group py-2">Recursos<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
-                    <a href="#depoimentos" class="text-gray-400 hover:text-white transition relative group py-2">Depoimentos<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
-                    <a href="#precos" class="text-gray-400 hover:text-white transition relative group py-2">Planos<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
-                    <a href="#faq" class="text-gray-400 hover:text-white transition relative group py-2">FAQ<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
-                    <a href="#precos" class="bg-white/5 border border-white/10 text-white px-6 py-2.5 rounded hover:bg-barber-gold hover:text-black hover:border-barber-gold transition-all duration-300 transform hover:-translate-y-0.5">Começar</a>
+                    <a href="#whitelabel" class="nav-link text-gray-400 hover:text-white transition relative group py-2">White Label<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
+                    <a href="#funcionalidades" class="nav-link text-gray-400 hover:text-white transition relative group py-2">Recursos<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
+                    <a href="#depoimentos" class="nav-link text-gray-400 hover:text-white transition relative group py-2">Depoimentos<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
+                    <a href="#precos" class="nav-link text-gray-400 hover:text-white transition relative group py-2">Planos<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
+                    <a href="#faq" class="nav-link text-gray-400 hover:text-white transition relative group py-2">FAQ<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-barber-gold transition-all duration-300 group-hover:w-full"></span></a>
+                    <a href="#precos" class="nav-link bg-white/5 border border-white/10 text-white px-6 py-2.5 rounded hover:bg-barber-gold hover:text-black hover:border-barber-gold transition-all duration-300 transform hover:-translate-y-0.5">Começar</a>
                 </div>
 
                 <div class="md:hidden flex items-center z-50">
@@ -209,13 +216,45 @@
             </div>
         </div>
         
-        <div id="mobile-menu" class="fixed inset-0 bg-barber-dark/95 backdrop-blur-xl z-40 hidden flex-col items-center justify-center space-y-8 opacity-0 transition-opacity duration-300">
-            <a href="#whitelabel" class="text-2xl font-bold text-white hover:text-barber-gold tracking-widest uppercase">White Label</a>
-            <a href="#funcionalidades" class="text-2xl font-bold text-white hover:text-barber-gold tracking-widest uppercase">Recursos</a>
-            <a href="#depoimentos" class="text-2xl font-bold text-white hover:text-barber-gold tracking-widest uppercase">Depoimentos</a>
-            <a href="#precos" class="text-2xl font-bold text-white hover:text-barber-gold tracking-widest uppercase">Planos</a>
-            <a href="#faq" class="text-2xl font-bold text-white hover:text-barber-gold tracking-widest uppercase">FAQ</a>
-            <a href="#precos" class="bg-barber-gold text-black px-10 py-4 rounded font-bold text-xl tracking-widest uppercase shadow-lg">Começar</a>
+        <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[60] hidden transition-opacity duration-300 opacity-0" onclick="toggleMenu()"></div>
+
+        <div id="mobile-menu-drawer" class="fixed top-0 right-0 w-[85%] max-w-[350px] bg-[#0a0a0a] border-l border-white/10 z-[70] transform translate-x-full transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) flex flex-col">
+            
+            <div class="flex items-center justify-between p-6 border-b border-white/5">
+                <span class="text-white font-bold tracking-widest text-sm uppercase">Menu</span>
+                <button onclick="toggleMenu()" class="text-gray-400 hover:text-white p-2"><i class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto py-6 px-6 space-y-4">
+                <a href="#whitelabel" class="mobile-link flex items-center gap-4 text-lg font-medium text-gray-300 hover:text-barber-gold transition group p-3 rounded hover:bg-white/5">
+                    <span class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-barber-gold/20 transition flex-shrink-0"><i class="fas fa-gem text-xs"></i></span>
+                    White Label
+                </a>
+                <a href="#funcionalidades" class="mobile-link flex items-center gap-4 text-lg font-medium text-gray-300 hover:text-barber-gold transition group p-3 rounded hover:bg-white/5">
+                    <span class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-barber-gold/20 transition flex-shrink-0"><i class="fas fa-bolt text-xs"></i></span>
+                    Recursos
+                </a>
+                <a href="#depoimentos" class="mobile-link flex items-center gap-4 text-lg font-medium text-gray-300 hover:text-barber-gold transition group p-3 rounded hover:bg-white/5">
+                    <span class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-barber-gold/20 transition flex-shrink-0"><i class="fas fa-star text-xs"></i></span>
+                    Depoimentos
+                </a>
+                <a href="#precos" class="mobile-link flex items-center gap-4 text-lg font-medium text-gray-300 hover:text-barber-gold transition group p-3 rounded hover:bg-white/5">
+                    <span class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-barber-gold/20 transition flex-shrink-0"><i class="fas fa-tags text-xs"></i></span>
+                    Planos
+                </a>
+                <a href="#faq" class="mobile-link flex items-center gap-4 text-lg font-medium text-gray-300 hover:text-barber-gold transition group p-3 rounded hover:bg-white/5">
+                    <span class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-barber-gold/20 transition flex-shrink-0"><i class="fas fa-question text-xs"></i></span>
+                    FAQ
+                </a>
+            </div>
+
+            <div class="p-6 border-t border-white/5 bg-black/20 mt-auto">
+                <a href="#precos" class="mobile-link block w-full py-4 bg-barber-gold text-black text-center font-bold uppercase tracking-widest rounded mb-6 hover:bg-white transition shadow-lg">Começar Agora</a>
+                <div class="flex justify-center gap-6 text-gray-500">
+                    <a href="https://www.instagram.com/usebarberlabel/" target="_blank" class="hover:text-white transition"><i class="fab fa-instagram text-xl"></i></a>
+                    <a href="https://wa.me/5547988147123" target="_blank" class="hover:text-white transition"><i class="fab fa-whatsapp text-xl"></i></a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -242,12 +281,12 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full justify-center items-center opacity-0 animate-fadeInUp px-2" style="animation-delay: 0.8s;">
-                <a href="#precos" class="w-full sm:w-auto text-center group relative px-8 py-4 bg-barber-gold text-black font-bold text-sm uppercase tracking-[0.2em] overflow-hidden hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(212,175,55,0.2)] cursor-pointer rounded">
+                <a href="#precos" class="nav-link w-full sm:w-auto text-center group relative px-8 py-4 bg-barber-gold text-black font-bold text-sm uppercase tracking-[0.2em] overflow-hidden hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(212,175,55,0.2)] cursor-pointer rounded">
                     <span class="relative z-10">Criar meu App</span>
                     <div class="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out skew-x-12"></div>
                 </a>
                 
-                <a href="#contato" class="w-full sm:w-auto text-center text-white text-xs md:text-sm font-medium uppercase tracking-[0.2em] hover:text-barber-gold transition flex items-center justify-center gap-3 group cursor-pointer border border-white/10 sm:border-transparent rounded px-8 py-4 sm:p-0">
+                <a href="#contato" class="nav-link w-full sm:w-auto text-center text-white text-xs md:text-sm font-medium uppercase tracking-[0.2em] hover:text-barber-gold transition flex items-center justify-center gap-3 group cursor-pointer border border-white/10 sm:border-transparent rounded px-8 py-4 sm:p-0">
                     <div class="w-10 h-10 hidden sm:flex rounded border border-white/10 items-center justify-center group-hover:border-barber-gold transition">
                         <i class="fas fa-calendar-check text-xs transform group-hover:scale-110 transition"></i>
                     </div>
@@ -261,35 +300,12 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-12 md:mb-24 reveal-wrapper">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white">White Label <span class="text-gradient-gold">Premium</span></h2>
-                <p class="text-barber-muted max-w-2xl mx-auto text-sm md:text-lg font-light leading-relaxed">
-                    Personalização total. O BarberLabel desaparece para que a sua marca brilhe.
-                </p>
+                <p class="text-barber-muted max-w-2xl mx-auto text-sm md:text-lg font-light leading-relaxed">Personalização total. O BarberLabel desaparece para que a sua marca brilhe.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <div class="reveal-wrapper">
-                    <div class="tilt-card group p-8 md:p-10 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 relative overflow-hidden h-full">
-                        <div class="absolute top-0 left-0 w-1 h-0 bg-barber-gold group-hover:h-full transition-all duration-500 z-20"></div>
-                        <div class="w-14 h-14 md:w-16 md:h-16 bg-black rounded flex items-center justify-center text-barber-gold text-xl md:text-2xl mb-6 md:mb-8 border border-white/5 relative z-10"><i class="fas fa-palette"></i></div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white relative z-10">Cores da Marca</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed relative z-10">Você define a paleta HEX da sua barbearia no painel. O app se adapta instantaneamente.</p>
-                    </div>
-                </div>
-                <div class="reveal-wrapper md:delay-100">
-                    <div class="tilt-card group p-8 md:p-10 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 relative overflow-hidden h-full">
-                        <div class="absolute top-0 left-0 w-1 h-0 bg-barber-gold group-hover:h-full transition-all duration-500 z-20"></div>
-                        <div class="w-14 h-14 md:w-16 md:h-16 bg-black rounded flex items-center justify-center text-barber-gold text-xl md:text-2xl mb-6 md:mb-8 border border-white/5 relative z-10"><i class="fab fa-app-store-ios"></i></div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white relative z-10">Ícone Próprio</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed relative z-10">Na loja de aplicativos e na tela inicial do cliente, o ícone é o SEU logo. Autoridade máxima.</p>
-                    </div>
-                </div>
-                <div class="reveal-wrapper md:delay-200">
-                    <div class="tilt-card group p-8 md:p-10 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 relative overflow-hidden h-full">
-                        <div class="absolute top-0 left-0 w-1 h-0 bg-barber-gold group-hover:h-full transition-all duration-500 z-20"></div>
-                        <div class="w-14 h-14 md:w-16 md:h-16 bg-black rounded flex items-center justify-center text-barber-gold text-xl md:text-2xl mb-6 md:mb-8 border border-white/5 relative z-10"><i class="fas fa-bell"></i></div>
-                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white relative z-10">Notificações</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed relative z-10">Fale diretamente com seu cliente. "Não esqueça seu corte amanhã!" aparece com o nome da sua barbearia.</p>
-                    </div>
-                </div>
+                <div class="reveal-wrapper"><div class="tilt-card group p-8 md:p-10 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 relative overflow-hidden h-full"><div class="absolute top-0 left-0 w-1 h-0 bg-barber-gold group-hover:h-full transition-all duration-500 z-20"></div><div class="w-14 h-14 md:w-16 md:h-16 bg-black rounded flex items-center justify-center text-barber-gold text-xl md:text-2xl mb-6 md:mb-8 border border-white/5 relative z-10"><i class="fas fa-palette"></i></div><h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white relative z-10">Cores da Marca</h3><p class="text-gray-500 text-sm leading-relaxed relative z-10">Você define a paleta HEX da sua barbearia no painel. O app se adapta instantaneamente.</p></div></div>
+                <div class="reveal-wrapper md:delay-100"><div class="tilt-card group p-8 md:p-10 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 relative overflow-hidden h-full"><div class="absolute top-0 left-0 w-1 h-0 bg-barber-gold group-hover:h-full transition-all duration-500 z-20"></div><div class="w-14 h-14 md:w-16 md:h-16 bg-black rounded flex items-center justify-center text-barber-gold text-xl md:text-2xl mb-6 md:mb-8 border border-white/5 relative z-10"><i class="fab fa-app-store-ios"></i></div><h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white relative z-10">Ícone Próprio</h3><p class="text-gray-500 text-sm leading-relaxed relative z-10">Na loja de aplicativos e na tela inicial do cliente, o ícone é o SEU logo. Autoridade máxima.</p></div></div>
+                <div class="reveal-wrapper md:delay-200"><div class="tilt-card group p-8 md:p-10 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 relative overflow-hidden h-full"><div class="absolute top-0 left-0 w-1 h-0 bg-barber-gold group-hover:h-full transition-all duration-500 z-20"></div><div class="w-14 h-14 md:w-16 md:h-16 bg-black rounded flex items-center justify-center text-barber-gold text-xl md:text-2xl mb-6 md:mb-8 border border-white/5 relative z-10"><i class="fas fa-bell"></i></div><h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white relative z-10">Notificações</h3><p class="text-gray-500 text-sm leading-relaxed relative z-10">Fale diretamente com seu cliente. "Não esqueça seu corte amanhã!" aparece com o nome da sua barbearia.</p></div></div>
             </div>
         </div>
     </section>
@@ -298,25 +314,9 @@
         <div class="absolute left-0 top-0 w-full h-full opacity-5 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         <div class="max-w-7xl mx-auto px-6 relative z-10">
              <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
-                 <div class="reveal-wrapper p-4">
-                     <div class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-barber-gold to-yellow-600 mb-2">
-                         +<span class="counter" data-target="45">0</span>%
-                     </div>
-                     <p class="text-white font-bold uppercase tracking-widest text-sm mb-2">Faturamento Médio</p>
-                     <p class="text-gray-500 text-xs">Nos primeiros 3 meses</p>
-                 </div>
-                 <div class="reveal-wrapper p-4 md:delay-100">
-                     <div class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-barber-gold to-yellow-600 mb-2">
-                         -<span class="counter" data-target="80">0</span>%
-                     </div>
-                     <p class="text-white font-bold uppercase tracking-widest text-sm mb-2">Redução de Faltas</p>
-                     <p class="text-gray-500 text-xs">Com lembretes automáticos</p>
-                 </div>
-                 <div class="reveal-wrapper p-4 md:delay-200">
-                     <div class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-barber-gold to-yellow-600 mb-2">24/7</div>
-                     <p class="text-white font-bold uppercase tracking-widest text-sm mb-2">Barbearia Aberta</p>
-                     <p class="text-gray-500 text-xs">Agendamento online</p>
-                 </div>
+                 <div class="reveal-wrapper p-4"><div class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-barber-gold to-yellow-600 mb-2">+<span class="counter" data-target="45">0</span>%</div><p class="text-white font-bold uppercase tracking-widest text-sm mb-2">Faturamento Médio</p><p class="text-gray-500 text-xs">Nos primeiros 3 meses</p></div>
+                 <div class="reveal-wrapper p-4 md:delay-100"><div class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-barber-gold to-yellow-600 mb-2">-<span class="counter" data-target="80">0</span>%</div><p class="text-white font-bold uppercase tracking-widest text-sm mb-2">Redução de Faltas</p><p class="text-gray-500 text-xs">Com lembretes automáticos</p></div>
+                 <div class="reveal-wrapper p-4 md:delay-200"><div class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-barber-gold to-yellow-600 mb-2">24/7</div><p class="text-white font-bold uppercase tracking-widest text-sm mb-2">Barbearia Aberta</p><p class="text-gray-500 text-xs">Agendamento online</p></div>
              </div>
         </div>
     </section>
@@ -324,90 +324,24 @@
     <section id="funcionalidades" class="py-16 md:py-32 bg-barber-dark relative overflow-hidden">
         <div class="absolute right-0 top-1/3 w-96 h-96 bg-barber-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 reveal-wrapper">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white">Gestão e <span class="text-gradient-gold">Marketing</span></h2>
-                <p class="text-barber-muted max-w-2xl mx-auto text-sm md:text-lg font-light leading-relaxed">
-                    Ferramentas de elite para dominar sua região e fidelizar clientes.
-                </p>
-            </div>
-
+            <div class="text-center mb-16 reveal-wrapper"><h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white">Gestão e <span class="text-gradient-gold">Marketing</span></h2><p class="text-barber-muted max-w-2xl mx-auto text-sm md:text-lg font-light leading-relaxed">Ferramentas de elite para dominar sua região e fidelizar clientes.</p></div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                <div class="reveal-wrapper">
-                    <div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col">
-                        <div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-calendar-check"></i></div>
-                        <h4 class="text-xl font-bold text-white mb-3">Agenda Sincronizada</h4>
-                        <p class="text-gray-500 text-sm flex-1">Sem mais horários duplicados ou filas. O sistema gerencia tudo em tempo real para evitar problemas.</p>
-                    </div>
-                </div>
-                <div class="reveal-wrapper md:delay-100">
-                    <div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col">
-                        <div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-trophy"></i></div>
-                        <h4 class="text-xl font-bold text-white mb-3">Ranking de Barbeiros</h4>
-                        <p class="text-gray-500 text-sm flex-1">Disputa saudável de quem faturou mais no mês. Motive sua equipe a produzir mais.</p>
-                    </div>
-                </div>
-                <div class="reveal-wrapper md:delay-200">
-                    <div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col">
-                        <div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-chart-line"></i></div>
-                        <h4 class="text-xl font-bold text-white mb-3">Relatórios de Elite</h4>
-                        <p class="text-gray-500 text-sm flex-1">Veja o faturamento dos últimos 7 dias, serviços mais vendidos e ticket médio em segundos.</p>
-                    </div>
-                </div>
-                <div class="reveal-wrapper">
-                    <div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col">
-                        <div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-images"></i></div>
-                        <h4 class="text-xl font-bold text-white mb-3">Stories Personalizáveis</h4>
-                        <p class="text-gray-500 text-sm flex-1">Adicione artes e banners de promoção diretamente no topo do app do cliente, igual ao Instagram.</p>
-                    </div>
-                </div>
-                <div class="reveal-wrapper md:delay-100">
-                    <div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col">
-                        <div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-clock"></i></div>
-                        <h4 class="text-xl font-bold text-white mb-3">Promoção Dinâmica</h4>
-                        <p class="text-gray-500 text-sm flex-1">Configure descontos automáticos para horários e dias de baixo movimento para lotar a agenda.</p>
-                    </div>
-                </div>
-                <div class="reveal-wrapper md:delay-200">
-                    <div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col">
-                        <div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-check-double"></i></div>
-                        <h4 class="text-xl font-bold text-white mb-3">Confirmação de Pagamento</h4>
-                        <p class="text-gray-500 text-sm flex-1">Dashboard completa com status financeiro. Saiba quem pagou e quem está pendente.</p>
-                    </div>
-                </div>
+                <div class="reveal-wrapper"><div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col"><div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-calendar-check"></i></div><h4 class="text-xl font-bold text-white mb-3">Agenda Sincronizada</h4><p class="text-gray-500 text-sm flex-1">Sem mais horários duplicados ou filas. O sistema gerencia tudo em tempo real para evitar problemas.</p></div></div>
+                <div class="reveal-wrapper md:delay-100"><div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col"><div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-trophy"></i></div><h4 class="text-xl font-bold text-white mb-3">Ranking de Barbeiros</h4><p class="text-gray-500 text-sm flex-1">Disputa saudável de quem faturou mais no mês. Motive sua equipe a produzir mais.</p></div></div>
+                <div class="reveal-wrapper md:delay-200"><div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col"><div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-chart-line"></i></div><h4 class="text-xl font-bold text-white mb-3">Relatórios de Elite</h4><p class="text-gray-500 text-sm flex-1">Veja o faturamento dos últimos 7 dias, serviços mais vendidos e ticket médio em segundos.</p></div></div>
+                <div class="reveal-wrapper"><div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col"><div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-images"></i></div><h4 class="text-xl font-bold text-white mb-3">Stories Personalizáveis</h4><p class="text-gray-500 text-sm flex-1">Adicione artes e banners de promoção diretamente no topo do app do cliente, igual ao Instagram.</p></div></div>
+                <div class="reveal-wrapper md:delay-100"><div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col"><div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-clock"></i></div><h4 class="text-xl font-bold text-white mb-3">Promoção Dinâmica</h4><p class="text-gray-500 text-sm flex-1">Configure descontos automáticos para horários e dias de baixo movimento para lotar a agenda.</p></div></div>
+                <div class="reveal-wrapper md:delay-200"><div class="tilt-card p-8 bg-barber-card border border-white/5 rounded hover:border-barber-gold/30 h-full flex flex-col"><div class="w-12 h-12 rounded bg-white/5 flex items-center justify-center text-barber-gold text-xl mb-6"><i class="fas fa-check-double"></i></div><h4 class="text-xl font-bold text-white mb-3">Confirmação de Pagamento</h4><p class="text-gray-500 text-sm flex-1">Dashboard completa com status financeiro. Saiba quem pagou e quem está pendente.</p></div></div>
             </div>
         </div>
     </section>
 
     <section id="comparativo" class="py-16 md:py-32 bg-barber-gray border-t border-white/5">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16 reveal-wrapper">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white">Não seja apenas <span class="text-gray-500 line-through">mais um</span></h2>
-                <p class="text-barber-muted max-w-2xl mx-auto text-sm md:text-lg">Veja por que o BarberLabel é a escolha óbvia para quem quer crescer.</p>
-            </div>
-
+            <div class="text-center mb-16 reveal-wrapper"><h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white">Não seja apenas <span class="text-gray-500 line-through">mais um</span></h2><p class="text-barber-muted max-w-2xl mx-auto text-sm md:text-lg">Veja por que o BarberLabel é a escolha óbvia para quem quer crescer.</p></div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-                <div class="reveal-wrapper p-8 border border-white/10 rounded-2xl bg-white/5 opacity-70 hover:opacity-100 transition duration-500">
-                    <h3 class="text-2xl font-bold text-gray-400 mb-8 text-center uppercase tracking-widest">Apps Genéricos</h3>
-                    <ul class="space-y-6 text-gray-400">
-                        <li class="flex items-center gap-4"><i class="fas fa-times text-red-500 text-xl w-6"></i> <span>Você é apenas mais um na lista</span></li>
-                        <li class="flex items-center gap-4"><i class="fas fa-times text-red-500 text-xl w-6"></i> <span>Clientes veem seus concorrentes</span></li>
-                        <li class="flex items-center gap-4"><i class="fas fa-times text-red-500 text-xl w-6"></i> <span>Taxas por agendamento</span></li>
-                        <li class="flex items-center gap-4"><i class="fas fa-times text-red-500 text-xl w-6"></i> <span>Marca do aplicativo em destaque</span></li>
-                    </ul>
-                </div>
-
-                <div class="reveal-wrapper">
-                    <div class="tilt-card p-10 border border-barber-gold rounded-2xl bg-black shadow-[0_0_50px_rgba(212,175,55,0.15)] relative overflow-hidden transform md:scale-105">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-barber-gold"></div>
-                        <h3 class="text-3xl font-black text-white mb-8 text-center uppercase tracking-widest">Barber<span class="text-barber-gold">Label</span></h3>
-                        <ul class="space-y-6 text-white font-medium">
-                            <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-barber-gold/20 flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-barber-gold text-sm"></i></div> <span>App exclusivo com SUA logo</span></li>
-                            <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-barber-gold/20 flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-barber-gold text-sm"></i></div> <span>Fidelidade total do cliente</span></li>
-                            <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-barber-gold/20 flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-barber-gold text-sm"></i></div> <span>Taxa Fixa (Zero surpresas)</span></li>
-                            <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-barber-gold/20 flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-barber-gold text-sm"></i></div> <span>Sua marca em 1º lugar</span></li>
-                        </ul>
-                    </div>
-                </div>
+                <div class="reveal-wrapper p-8 border border-white/10 rounded-2xl bg-white/5 opacity-70 hover:opacity-100 transition duration-500"><h3 class="text-2xl font-bold text-gray-400 mb-8 text-center uppercase tracking-widest">Apps Genéricos</h3><ul class="space-y-6 text-gray-400"><li class="flex items-center gap-4"><i class="fas fa-times text-red-500 text-xl w-6"></i> <span>Você é apenas mais um na lista</span></li><li class="flex items-center gap-4"><i class="fas fa-times text-red-500 text-xl w-6"></i> <span>Clientes veem seus concorrentes</span></li><li class="flex items-center gap-4"><i class="fas fa-times text-red-500 text-xl w-6"></i> <span>Taxas por agendamento</span></li><li class="flex items-center gap-4"><i class="fas fa-times text-red-500 text-xl w-6"></i> <span>Marca do aplicativo em destaque</span></li></ul></div>
+                <div class="reveal-wrapper"><div class="tilt-card p-10 border border-barber-gold rounded-2xl bg-black shadow-[0_0_50px_rgba(212,175,55,0.15)] relative overflow-hidden transform md:scale-105"><div class="absolute top-0 left-0 w-full h-1 bg-barber-gold"></div><h3 class="text-3xl font-black text-white mb-8 text-center uppercase tracking-widest">Barber<span class="text-barber-gold">Label</span></h3><ul class="space-y-6 text-white font-medium"><li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-barber-gold/20 flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-barber-gold text-sm"></i></div> <span>App exclusivo com SUA logo</span></li><li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-barber-gold/20 flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-barber-gold text-sm"></i></div> <span>Fidelidade total do cliente</span></li><li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-barber-gold/20 flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-barber-gold text-sm"></i></div> <span>Taxa Fixa (Zero surpresas)</span></li><li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-barber-gold/20 flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-barber-gold text-sm"></i></div> <span>Sua marca em 1º lugar</span></li></ul></div></div>
             </div>
         </div>
     </section>
@@ -424,7 +358,6 @@
 
         <div class="relative w-full cursor-grab active:cursor-grabbing no-scrollbar overflow-x-hidden" id="testimonial-container">
             <div class="flex gap-4 md:gap-6 w-max px-6" id="testimonial-track">
-                
                 <div class="w-[280px] md:w-[400px] tilt-card p-6 md:p-8 bg-barber-dark rounded border border-white/5 relative flex-shrink-0 select-none">
                     <div class="text-barber-gold mb-4 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                     <p class="text-gray-300 italic mb-6 md:mb-8 text-sm leading-relaxed">"Meus clientes acham que paguei uma fortuna por um app exclusivo. O white label é perfeito."</p>
@@ -433,7 +366,6 @@
                         <div><h4 class="font-bold text-white text-sm">Ricardo Silva</h4><p class="text-[10px] text-gray-500 uppercase">Macho Alfa Barbearia</p></div>
                     </div>
                 </div>
-
                 <div class="w-[280px] md:w-[400px] tilt-card p-6 md:p-8 bg-barber-dark rounded border border-white/5 relative flex-shrink-0 select-none">
                     <div class="text-barber-gold mb-4 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                     <p class="text-gray-300 italic mb-6 md:mb-8 text-sm leading-relaxed">"Eu perdia 2 horas por dia no WhatsApp. Agora a agenda enche sozinha. Sensacional."</p>
@@ -442,7 +374,6 @@
                         <div><h4 class="font-bold text-white text-sm">André Costa</h4><p class="text-[10px] text-gray-500 uppercase">Barber Shop VIP</p></div>
                     </div>
                 </div>
-
                 <div class="w-[280px] md:w-[400px] tilt-card p-6 md:p-8 bg-barber-dark rounded border border-white/5 relative flex-shrink-0 select-none">
                     <div class="text-barber-gold mb-4 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                     <p class="text-gray-300 italic mb-6 md:mb-8 text-sm leading-relaxed">"O controle financeiro me salvou. Sei exatamente quanto lucrei no mês."</p>
@@ -451,7 +382,6 @@
                         <div><h4 class="font-bold text-white text-sm">Felipe Santos</h4><p class="text-[10px] text-gray-500 uppercase">Navalha de Ouro</p></div>
                     </div>
                 </div>
-
                  <div class="w-[280px] md:w-[400px] tilt-card p-6 md:p-8 bg-barber-dark rounded border border-white/5 relative flex-shrink-0 select-none">
                     <div class="text-barber-gold mb-4 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                     <p class="text-gray-300 italic mb-6 md:mb-8 text-sm leading-relaxed">"Troquei dois sistemas famosos por esse. A liberdade de customizar as cores não tem preço."</p>
@@ -460,7 +390,6 @@
                         <div><h4 class="font-bold text-white text-sm">Marcos V.</h4><p class="text-[10px] text-gray-500 uppercase">Studio 88</p></div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -488,7 +417,7 @@
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Serviços Ilimitados</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Notificações Push</li>
                         </ul>
-                        <a href="https://pay.cakto.com.br/reyxcpa_720162" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
+                        <a href="https://pay.cakto.com.br/433jjyk" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
                     </div>
                 </div>
 
@@ -552,36 +481,44 @@
                 <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white">Perguntas Frequentes</h2>
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-6"> 
+                
                 <div class="faq-item">
-                    <button class="w-full px-6 py-5 flex items-center justify-between text-left text-white font-bold focus:outline-none" onclick="toggleFaq(this)">
-                        <span>Preciso saber programar?</span>
-                        <i class="fas fa-chevron-down faq-icon text-barber-gold"></i>
+                    <button class="w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg font-bold text-white">Preciso saber programar?</span>
+                        <i class="fas fa-plus text-barber-gold transition-transform duration-300 text-xl"></i>
                     </button>
-                    <div class="faq-wrapper">
-                        <div class="px-6 pb-6 text-gray-400 text-sm">Não! Nós entregamos tudo pronto. Você só precisa nos enviar sua logo e escolher as cores. O resto é com a gente.</div>
+                    <div class="faq-answer">
+                        <div class="px-8 pb-8 pt-2 text-gray-400 text-base leading-relaxed border-t border-white/5 mt-2">
+                            Não! Nós entregamos tudo pronto. Você só precisa nos enviar sua logo e escolher as cores. O resto é com a gente, cuidamos de toda a parte técnica para você focar apenas em cortar cabelo.
+                        </div>
                     </div>
                 </div>
 
                 <div class="faq-item">
-                    <button class="w-full px-6 py-5 flex items-center justify-between text-left text-white font-bold focus:outline-none" onclick="toggleFaq(this)">
-                        <span>Tem fidelidade?</span>
-                        <i class="fas fa-chevron-down faq-icon text-barber-gold"></i>
+                    <button class="w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg font-bold text-white">Tem fidelidade?</span>
+                        <i class="fas fa-plus text-barber-gold transition-transform duration-300 text-xl"></i>
                     </button>
-                    <div class="faq-wrapper">
-                        <div class="px-6 pb-6 text-gray-400 text-sm">Nenhuma. Você pode cancelar quando quiser, sem multas ou letras miúdas. Queremos que fique porque gosta, não porque é obrigado.</div>
+                    <div class="faq-answer">
+                        <div class="px-8 pb-8 pt-2 text-gray-400 text-base leading-relaxed border-t border-white/5 mt-2">
+                            Nenhuma. Você pode cancelar quando quiser, sem multas ou letras miúdas. Queremos que fique com a gente porque o sistema traz resultados reais para o seu negócio, não porque é obrigado por contrato.
+                        </div>
                     </div>
                 </div>
 
                 <div class="faq-item">
-                    <button class="w-full px-6 py-5 flex items-center justify-between text-left text-white font-bold focus:outline-none" onclick="toggleFaq(this)">
-                        <span>Funciona em iPhone e Android?</span>
-                        <i class="fas fa-chevron-down faq-icon text-barber-gold"></i>
+                    <button class="w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg font-bold text-white">Funciona em iPhone e Android?</span>
+                        <i class="fas fa-plus text-barber-gold transition-transform duration-300 text-xl"></i>
                     </button>
-                    <div class="faq-wrapper">
-                        <div class="px-6 pb-6 text-gray-400 text-sm">Sim! Seu aplicativo funcionará perfeitamente em qualquer dispositivo (iOS e Android) através da tecnologia PWA ou publicação nas lojas (consulte planos).</div>
+                    <div class="faq-answer">
+                        <div class="px-8 pb-8 pt-2 text-gray-400 text-base leading-relaxed border-t border-white/5 mt-2">
+                            Sim! Seu aplicativo funcionará perfeitamente em qualquer dispositivo (iOS e Android) através da tecnologia PWA, que não ocupa espaço na memória do cliente, ou publicação nas lojas (consulte planos).
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -625,17 +562,58 @@
     <a href="https://wa.me/5547988147123?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." target="_blank" class="fixed bottom-6 right-6 z-50 bg-barber-whatsapp text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl whatsapp-btn hover:scale-110 transition-transform duration-300"><i class="fab fa-whatsapp text-3xl"></i></a>
 
     <script>
-        // 1. EXIT INTENT POPUP (Apenas Desktop)
+        // 1. MENU MOBILE DRAWER
+        const btn = document.getElementById('mobile-menu-btn');
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const drawer = document.getElementById('mobile-menu-drawer');
+        const body = document.body;
+
+        function toggleMenu() {
+            const isHidden = overlay.classList.contains('hidden');
+            if (isHidden) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('translate-x-full');
+                body.classList.add('overflow-hidden'); // Trava Scroll
+            } else {
+                overlay.classList.add('opacity-0');
+                drawer.classList.add('translate-x-full');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+                body.classList.remove('overflow-hidden'); // Libera Scroll
+            }
+        }
+        btn.addEventListener('click', toggleMenu);
+
+        // 2. SMOOTH SCROLL (DESKTOP & MOBILE FIX)
+        document.querySelectorAll('a[href^="#"], .nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if(!href.startsWith('#')) return;
+
+                e.preventDefault();
+                const targetElement = document.querySelector(href);
+
+                // Se for mobile e o menu estiver aberto, fecha
+                if (!overlay.classList.contains('hidden')) {
+                    toggleMenu();
+                }
+
+                if (targetElement) {
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }, 100); 
+                }
+            });
+        });
+
+        // 3. EXIT INTENT POPUP
         let popupShown = false;
-        
         document.addEventListener('mouseleave', (e) => {
             if (e.clientY < 0 && !popupShown) {
                 document.getElementById('entry-popup').classList.remove('hidden');
                 popupShown = true;
             }
         });
-
-        // Fallback timer para mobile
         setTimeout(() => {
             if(!popupShown) {
                 document.getElementById('entry-popup').classList.remove('hidden');
@@ -647,31 +625,32 @@
             document.getElementById('entry-popup').classList.add('hidden');
         }
 
-        // --- FAQ FIXED (DEFINITIVO) ---
+        // 4. FAQ LOGIC (ROBUSTA)
         function toggleFaq(button) {
-            const item = button.parentElement;
-            const wrapper = item.querySelector('.faq-wrapper');
-            const icon = button.querySelector('.faq-icon');
+            const item = button.parentElement; 
+            const answer = item.querySelector('.faq-answer'); 
+            const icon = button.querySelector('i');
             
             const isOpen = item.classList.contains('active');
 
             // Fecha todos
-            document.querySelectorAll('.faq-item').forEach(el => {
-                el.classList.remove('active');
-                el.querySelector('.faq-wrapper').style.maxHeight = null;
-                el.querySelector('.faq-icon').classList.remove('rotate-180');
-                el.querySelector('.faq-icon').style.color = '';
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                otherItem.classList.remove('active');
+                otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                otherItem.querySelector('i').classList.remove('fa-minus');
+                otherItem.querySelector('i').classList.add('fa-plus');
             });
 
-            // Abre o clicado se não estava aberto
+            // Abre o atual
             if (!isOpen) {
                 item.classList.add('active');
-                wrapper.style.maxHeight = wrapper.scrollHeight + "px";
-                icon.classList.add('rotate-180');
-                icon.style.color = '#d4af37';
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                icon.classList.remove('fa-plus');
+                icon.classList.add('fa-minus');
             }
         }
 
+        // 5. SOLICITAR DEMO
         function solicitarDemo() {
             const input = document.getElementById('whatsapp-input');
             const errorMsg = document.getElementById('error-msg');
@@ -701,6 +680,7 @@
             });
         }
 
+        // 6. TYPEWRITER & ANIMATIONS
         const textElement = document.getElementById('typewriter-text');
         const words = ["Sua Identidade.", "Sua Marca.", "Seu Negócio.", "Seu App."];
         let wordIndex = 0;
@@ -730,6 +710,7 @@
         }
         document.addEventListener('DOMContentLoaded', typeWriter);
 
+        // 7. COUNTERS
         const counters = document.querySelectorAll('.counter');
         const statsSection = document.getElementById('stats-section');
         let started = false;
@@ -759,12 +740,16 @@
         }, { threshold: 0.5 });
         if(statsSection) statsObserver.observe(statsSection);
 
+        // 8. CARROSSEL (MOBILE FIX)
         const track = document.getElementById('testimonial-track');
         const container = document.getElementById('testimonial-container');
         const items = Array.from(track.children);
         items.forEach(item => { track.appendChild(item.cloneNode(true)); });
+        
         let isDown = false, startX, scrollLeft, autoScrollSpeed = 0.5, isHovered = false;
+        
         function autoScroll() {
+            // Só rola se o usuário não estiver interagindo (Mouse ou Toque)
             if (!isDown && !isHovered) {
                 container.scrollLeft += autoScrollSpeed;
                 if (container.scrollLeft >= track.scrollWidth / 2) container.scrollLeft = 0;
@@ -772,15 +757,33 @@
             requestAnimationFrame(autoScroll);
         }
         autoScroll();
+
+        // Mouse Events
         container.addEventListener('mousedown', (e) => { isDown = true; container.classList.add('cursor-grabbing'); startX = e.pageX - container.offsetLeft; scrollLeft = container.scrollLeft; });
         container.addEventListener('mouseleave', () => { isDown = false; isHovered = false; container.classList.remove('cursor-grabbing'); });
         container.addEventListener('mouseup', () => { isDown = false; container.classList.remove('cursor-grabbing'); });
         container.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const x = e.pageX - container.offsetLeft; const walk = (x - startX) * 2; container.scrollLeft = scrollLeft - walk; });
-        container.addEventListener('touchstart', (e) => { isDown = true; startX = e.touches[0].pageX - container.offsetLeft; scrollLeft = container.scrollLeft; });
-        container.addEventListener('touchend', () => { isDown = false; });
-        container.addEventListener('touchmove', (e) => { if (!isDown) return; const x = e.touches[0].pageX - container.offsetLeft; const walk = (x - startX) * 2; container.scrollLeft = scrollLeft - walk; });
         container.addEventListener('mouseenter', () => isHovered = true);
 
+        // Touch Events (Mobile) - Pausa o autoscroll ao tocar
+        container.addEventListener('touchstart', (e) => { 
+            isDown = true; 
+            isHovered = true; // Pausa
+            startX = e.touches[0].pageX - container.offsetLeft; 
+            scrollLeft = container.scrollLeft; 
+        });
+        container.addEventListener('touchend', () => { 
+            isDown = false; 
+            isHovered = false; // Retoma
+        });
+        container.addEventListener('touchmove', (e) => { 
+            if (!isDown) return; 
+            const x = e.touches[0].pageX - container.offsetLeft; 
+            const walk = (x - startX) * 2; 
+            container.scrollLeft = scrollLeft - walk; 
+        });
+
+        // 9. TILT 3D (Desktop Only)
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         if (!isTouchDevice) {
             document.querySelectorAll('.tilt-card').forEach(card => {
@@ -798,48 +801,13 @@
                 card.addEventListener('mouseleave', () => { card.style.transition = 'transform 0.5s ease-out'; card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)'; });
             });
         }
-
+        
         document.getElementById('logo-top').addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-barber-dark/90', 'border-white/5', 'shadow-2xl');
-                navbar.classList.remove('bg-transparent', 'border-transparent');
-            } else {
-                navbar.classList.remove('bg-barber-dark/90', 'border-white/5', 'shadow-2xl');
-                navbar.classList.add('bg-transparent', 'border-transparent');
-            }
-        });
-
+        
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal-wrapper').forEach(el => revealObserver.observe(el));
-
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
-        const icon = btn.querySelector('i');
-        
-        btn.addEventListener('click', () => {
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden'); menu.classList.add('flex');
-                setTimeout(() => menu.classList.remove('opacity-0'), 10);
-                icon.classList.remove('fa-bars'); icon.classList.add('fa-times');
-            } else {
-                menu.classList.add('opacity-0');
-                setTimeout(() => { menu.classList.add('hidden'); menu.classList.remove('flex'); }, 300);
-                icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
-            }
-        });
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                menu.classList.add('opacity-0');
-                setTimeout(() => { menu.classList.add('hidden'); menu.classList.remove('flex'); }, 300);
-                icon.classList.remove('fa-times'); icon.classList.add('fa-bars');
-                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
     </script>
 </body>
 </html>
