@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login Demo - BarberLabel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        barber: {
+                            dark: '#050505', 
+                            gray: '#0f0f0f',
+                            card: '#161616',
+                            gold: '#d4af37',
+                            goldhover: '#b5952f',
+                            light: '#e5e5e5',
+                            muted: '#9ca3af',
+                            whatsapp: '#25D366',
+                            error: '#ef4444'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px)",
+                    },
+                    animation: {
+                        'fadeScale': 'fadeScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+                        'spin-slow': 'spin 1s linear infinite',
+                    },
+                    keyframes: {
+                        fadeScale: {
+                            '0%': { opacity: '0', transform: 'scale(0.95) translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+                        },
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* --- GERAL --- */
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; background: transparent; }
+        html, body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; }
+        html { scroll-behavior: smooth; }
+        body { -webkit-tap-highlight-color: transparent; }
+
+        /* --- BACKGROUND --- */
+        .bg-tech-grid {
+            background-size: 30px 30px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+        }
+        @media (min-width: 768px) { .bg-tech-grid { background-size: 50px 50px; } }
+        .vignette-overlay { background: radial-gradient(circle at center, transparent 0%, #050505 90%); }
+
+        /* --- TEXTO --- */
+        .text-gradient-gold {
+            background: linear-gradient(to right, #d4af37, #fceeb5, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 6s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        /* --- ANIMAÇÕES --- */
+        .reveal-wrapper {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-wrapper.active { opacity: 1; transform: translateY(0); }
+
+        /* --- TILT 3D --- */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+        .tilt-card::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(125deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .tilt-card:hover::after { opacity: 0.3; }
+
+        /* --- INPUT CUSTOM --- */
+        .custom-input:-webkit-autofill,
+        .custom-input:-webkit-autofill:hover, 
+        .custom-input:-webkit-autofill:focus, 
+        .custom-input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #050505 inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* --- ERRO VISUAL --- */
+        .input-error {
+            border-color: #ef4444 !important;
+            background-color: rgba(239, 68, 68, 0.1) !important;
+            color: #ef4444 !important;
+        }
+        .input-error::placeholder {
+            color: rgba(239, 68, 68, 0.5) !important;
+        }
+        .icon-error {
+            color: #ef4444 !important;
+        }
+    </style>
+</head>
+<body class="bg-barber-dark text-barber-light font-sans antialiased selection:bg-barber-gold selection:text-black relative flex flex-col min-h-screen">
+
+    <nav id="navbar" class="absolute top-0 w-full z-[100] border-b border-white/5 bg-transparent backdrop-blur-[2px]">
+        <div class="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
+            <div class="flex justify-center h-20 md:h-24 items-center">
+                <a href="https://barber-label.vercel.app/" class="flex-shrink-0 flex items-center gap-3 cursor-pointer hover:opacity-80 transition">
+                    <img src="https://i.imgur.com/lEKpbTj.png" alt="BarberLabel Logo" 
+                         class="h-8 md:h-12 w-auto object-contain"
+                         style="filter: brightness(0) saturate(100%) invert(74%) sepia(61%) saturate(696%) hue-rotate(3deg) brightness(94%) contrast(90%);">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow relative flex justify-center items-center overflow-hidden bg-tech-grid pt-20 pb-10 min-h-[800px]">
+        <div class="absolute inset-0 vignette-overlay pointer-events-none z-0"></div>
+        
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-barber-gold/5 rounded-full blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
+
+        <div class="relative z-10 max-w-md w-full px-6 text-center">
+            
+            <div class="reveal-wrapper mb-8">
+                <h1 class="text-3xl md:text-4xl font-black text-white mb-2">
+                    Acesso à <span class="text-gradient-gold">Demo</span>
+                </h1>
+                <p class="text-gray-500 text-xs md:text-sm font-light uppercase tracking-widest">
+                    Ambiente Administrativo
+                </p>
+            </div>
+
+            <div class="reveal-wrapper delay-100">
+                <div id="login-card" class="tilt-card bg-barber-card border border-white/10 p-8 md:p-10 rounded-xl text-left shadow-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-barber-gold"></div>
+                    
+                    <form id="login-form" onsubmit="event.preventDefault(); loginDemo();" class="flex flex-col gap-6">
+                        
+                        <div class="relative group/input">
+                            <label class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 block group-focus-within/input:text-barber-gold transition-colors">Usuário</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i id="icon-user" class="fas fa-user text-gray-500 group-focus-within/input:text-white transition-colors"></i>
+                                </div>
+                                <input type="text" id="username" placeholder="Digite seu usuário" 
+                                    class="custom-input w-full bg-[#050505] border border-white/10 focus:border-barber-gold text-white px-12 py-4 rounded outline-none transition duration-300 placeholder-gray-600 text-sm">
+                            </div>
+                        </div>
+
+                        <div class="relative group/input">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-widest group-focus-within/input:text-barber-gold transition-colors">Senha</label>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i id="icon-pass" class="fas fa-lock text-gray-500 group-focus-within/input:text-white transition-colors"></i>
+                                </div>
+                                <input type="password" id="password" placeholder="••••••••" 
+                                    class="custom-input w-full bg-[#050505] border border-white/10 focus:border-barber-gold text-white px-12 py-4 rounded outline-none transition duration-300 placeholder-gray-600 text-sm">
+                            </div>
+                        </div>
+
+                        <div id="error-msg" class="hidden text-barber-error text-[10px] uppercase font-bold text-center tracking-widest bg-red-500/10 py-2 rounded border border-red-500/20">
+                            <i class="fas fa-exclamation-circle mr-1"></i> Credenciais Inválidas
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-barber-gold text-black text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] rounded mt-2 flex items-center justify-center gap-3 group/btn">
+                            <span id="btn-text">Acessar Demo</span>
+                            <i id="btn-icon" class="fas fa-arrow-right transform group-hover/btn:translate-x-1 transition-transform"></i>
+                            <i id="btn-loader" class="fas fa-circle-notch animate-spin-slow hidden"></i>
+                        </button>
+
+                    </form>
+
+                    <div class="mt-8 pt-6 border-t border-white/5 text-center">
+                        <p class="text-[10px] text-gray-600">
+                            Não tem acesso? <a href="https://barber-label.vercel.app/" class="text-barber-gold hover:text-white transition cursor-pointer font-bold ml-1">Solicitar Demo</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-black py-8 border-t border-white/10 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex justify-center items-center">
+            <div class="text-gray-600 text-xs tracking-widest uppercase text-center">BarberLabel &copy; 2026</div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. ANIMATION OBSERVER
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-wrapper').forEach(el => revealObserver.observe(el));
+
+        // 2. TILT 3D EFFECT
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (!isTouchDevice) {
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -2; 
+                    const rotateY = ((x - centerX) / centerX) * 2;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.005, 1.005, 1.005)`;
+                });
+                card.addEventListener('mouseleave', () => { 
+                    card.style.transition = 'transform 0.5s ease-out'; 
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)'; 
+                });
+            });
+        }
+
+        // 3. LOGIN LOGIC
+        function loginDemo() {
+            // CREDENCIAIS DA DEMO (CONFIGURE AQUI)
+            const VALID_USER = "admin";
+            const VALID_PASS = "1234";
+
+            // Elementos
+            const userIn = document.getElementById('username');
+            const passIn = document.getElementById('password');
+            const iconUser = document.getElementById('icon-user');
+            const iconPass = document.getElementById('icon-pass');
+            const card = document.getElementById('login-card');
+            const errorMsg = document.getElementById('error-msg');
+            const btn = document.querySelector('button');
+            const text = document.getElementById('btn-text');
+            const icon = document.getElementById('btn-icon');
+            const loader = document.getElementById('btn-loader');
+
+            // Reset visual
+            userIn.classList.remove('input-error');
+            passIn.classList.remove('input-error');
+            iconUser.classList.remove('icon-error');
+            iconPass.classList.remove('icon-error');
+            errorMsg.classList.add('hidden');
+            card.classList.remove('animate-shake');
+
+            // Loading State
+            text.textContent = "Verificando...";
+            icon.classList.add('hidden');
+            loader.classList.remove('hidden');
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            
+            // Simula delay de servidor (1 segundo)
+            setTimeout(() => {
+                // VERIFICAÇÃO
+                if (userIn.value === VALID_USER && passIn.value === VALID_PASS) {
+                    // SUCESSO
+                    text.textContent = "Redirecionando...";
+                    window.location.href = 'https://barber-shop-white-label-yv5c.vercel.app/';
+                } else {
+                    // ERRO
+                    // 1. Reseta botão
+                    text.textContent = "Acessar Demo";
+                    icon.classList.remove('hidden');
+                    loader.classList.add('hidden');
+                    btn.classList.remove('opacity-80', 'cursor-not-allowed');
+
+                    // 2. Aplica estilos de erro
+                    userIn.classList.add('input-error');
+                    passIn.classList.add('input-error');
+                    iconUser.classList.add('icon-error');
+                    iconPass.classList.add('icon-error');
+                    errorMsg.classList.remove('hidden');
+
+                    // 3. Animação de Shake no Card
+                    card.classList.add('animate-shake');
+                    setTimeout(() => { card.classList.remove('animate-shake'); }, 500);
+                    
+                    // 4. Limpa senha
+                    passIn.value = '';
+                    passIn.focus();
+                }
+            }, 1000);
+        }
+
+        // Remove erro ao digitar
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('input-error');
+                document.getElementById('error-msg').classList.add('hidden');
+                document.getElementById('icon-user').classList.remove('icon-error');
+                document.getElementById('icon-pass').classList.remove('icon-error');
+            });
+        });
+    </script>
+</body>
+</html>
