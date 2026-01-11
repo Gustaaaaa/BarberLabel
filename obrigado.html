@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pagamento Confirmado - BarberLabel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        barber: {
+                            dark: '#050505', 
+                            gray: '#0f0f0f',
+                            card: '#161616',
+                            gold: '#d4af37',
+                            goldhover: '#b5952f',
+                            light: '#e5e5e5',
+                            muted: '#9ca3af',
+                            whatsapp: '#25D366',
+                            error: '#ef4444'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #ffffff05 1px, transparent 1px), linear-gradient(to bottom, #ffffff05 1px, transparent 1px)",
+                    },
+                    screens: {
+                        'xs': '475px',
+                    },
+                    animation: {
+                        'fadeScale': 'fadeScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeScale: {
+                            '0%': { opacity: '0', transform: 'scale(0.95) translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* --- GERAL --- */
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; background: transparent; }
+        html, body { -ms-overflow-style: none; scrollbar-width: none; overflow-x: hidden; }
+        html { scroll-behavior: smooth; }
+        body { -webkit-tap-highlight-color: transparent; }
+
+        /* --- BACKGROUND --- */
+        .bg-tech-grid {
+            background-size: 30px 30px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+        }
+        @media (min-width: 768px) { .bg-tech-grid { background-size: 50px 50px; } }
+        .vignette-overlay { background: radial-gradient(circle at center, transparent 0%, #050505 90%); }
+
+        /* --- TEXTO --- */
+        .text-gradient-gold {
+            background: linear-gradient(to right, #d4af37, #fceeb5, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 6s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        /* --- ANIMAÇÕES --- */
+        .reveal-wrapper {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-wrapper.active { opacity: 1; transform: translateY(0); }
+
+        /* --- TILT 3D --- */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+        .tilt-card::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(125deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .tilt-card:hover::after { opacity: 0.3; }
+    </style>
+</head>
+<body class="bg-barber-dark text-barber-light font-sans antialiased selection:bg-barber-gold selection:text-black relative flex flex-col min-h-screen">
+
+    <nav id="navbar" class="absolute top-0 w-full z-[100] border-b border-white/5 bg-transparent backdrop-blur-[2px]">
+        <div class="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8">
+            <div class="flex justify-center h-20 md:h-24 items-center">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <img src="https://i.imgur.com/lEKpbTj.png" alt="BarberLabel Logo" 
+                         class="h-8 md:h-12 w-auto object-contain"
+                         style="filter: brightness(0) saturate(100%) invert(74%) sepia(61%) saturate(696%) hue-rotate(3deg) brightness(94%) contrast(90%);">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow relative flex justify-center overflow-hidden bg-tech-grid pt-32 md:pt-40 pb-10">
+        <div class="absolute inset-0 vignette-overlay pointer-events-none z-0"></div>
+        
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-barber-gold/5 rounded-full blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
+
+        <div class="relative z-10 max-w-2xl mx-auto px-6 text-center">
+            
+            <div class="reveal-wrapper mb-8 flex flex-col items-center justify-center gap-4">
+                <div class="w-24 h-24 md:w-28 md:h-28 rounded-full bg-barber-gold/10 border border-barber-gold flex items-center justify-center shadow-[0_0_40px_rgba(212,175,55,0.2)] animate-pulse-slow">
+                    <svg class="w-12 h-12 md:w-14 md:h-14 text-barber-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="flex items-center gap-2 text-barber-gold text-xs font-bold uppercase tracking-widest border border-barber-gold/30 px-3 py-1 rounded-full bg-black/50 backdrop-blur">
+                    <i class="fas fa-lock"></i> Transação Segura
+                </div>
+            </div>
+
+            <div class="reveal-wrapper delay-100">
+                <h1 class="text-3xl md:text-5xl font-black text-white mb-6">
+                    Pagamento <span class="text-gradient-gold">Confirmado!</span>
+                </h1>
+                <p class="text-gray-400 text-sm md:text-lg mb-10 font-light leading-relaxed max-w-lg mx-auto">
+                    Para agilizar, responda agora o <strong>mini formulário</strong> abaixo. É rápido e serve para personalizarmos totalmente sua loja com a sua marca!
+                </p>
+            </div>
+
+            <div class="reveal-wrapper delay-200">
+                <div class="tilt-card bg-barber-card border border-white/10 p-8 rounded-xl text-left shadow-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-barber-gold"></div>
+                    
+                    <h3 class="text-white font-bold text-lg mb-6 flex items-center gap-2">
+                        <i class="fas fa-sliders-h text-barber-gold text-xs"></i> Próximos Passos
+                    </h3>
+
+                    <div class="space-y-6">
+                        <div class="flex gap-4 relative">
+                            <div class="flex flex-col items-center relative z-10">
+                                <div class="w-8 h-8 rounded-full bg-barber-gold flex items-center justify-center text-black text-xs font-bold shadow-[0_0_15px_rgba(212,175,55,0.5)]">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="h-full w-[1px] bg-barber-gold/50 my-2"></div>
+                            </div>
+                            <div class="pb-4">
+                                <h4 class="text-white text-sm font-bold">Confirmação Recebida</h4>
+                                <p class="text-gray-500 text-xs mt-1 leading-relaxed">Já identificamos seu pagamento e iniciamos o processo de configuração da sua conta.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 relative">
+                            <div class="flex flex-col items-center relative z-10">
+                                <div class="w-8 h-8 rounded-full bg-barber-card border border-barber-gold text-barber-gold flex items-center justify-center text-xs font-bold animate-pulse">
+                                    2
+                                </div>
+                                <div class="h-full w-[1px] bg-white/10 my-2"></div>
+                            </div>
+                            <div class="pb-4">
+                                <h4 class="text-white text-sm font-bold">Dados & Personalização</h4>
+                                <p class="text-gray-500 text-xs mt-1 leading-relaxed">Clique no botão abaixo para preencher o formulário. Precisaremos da sua logo e das cores que deseja usar.</p>
+                            </div>
+                        </div>
+
+                         <div class="flex gap-4 relative">
+                            <div class="flex flex-col items-center relative z-10">
+                                <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 text-gray-500 flex items-center justify-center text-xs font-bold">
+                                    3
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 text-sm font-bold">Site no Ar</h4>
+                                <p class="text-gray-500 text-xs mt-1 leading-relaxed">Assim que recebermos os dados, subiremos seu site exclusivo pronto para uso imediato.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal-wrapper delay-300 mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://forms.gle/y4ZBjyzSt9L5q8LFA" target="_blank" class="px-8 py-4 bg-barber-gold text-black text-xs font-bold uppercase tracking-widest hover:bg-barber-goldhover transition rounded shadow-lg flex items-center justify-center gap-2 hover:-translate-y-1 transform duration-300">
+                    <i class="fas fa-file-signature"></i> Responder Formulário
+                </a>
+                
+                <a href="https://wa.me/5547988147123?text=Ol%C3%A1,%20acabei%20de%20realizar%20o%20pagamento%20e%20tenho%20uma%20d%C3%BAvida." target="_blank" class="px-8 py-4 border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition rounded flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-lg"></i> Suporte Prioritário
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-black py-8 border-t border-white/10 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex justify-center items-center">
+            <div class="text-gray-600 text-xs tracking-widest uppercase text-center">BarberLabel &copy; 2026</div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. REVEAL ANIMATION
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-wrapper').forEach(el => revealObserver.observe(el));
+
+        // 2. TILT 3D EFFECT
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (!isTouchDevice) {
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -3;
+                    const rotateY = ((x - centerX) / centerX) * 3;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                });
+                card.addEventListener('mouseleave', () => { 
+                    card.style.transition = 'transform 0.5s ease-out'; 
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)'; 
+                });
+            });
+        }
+    </script>
+</body>
+</html>
