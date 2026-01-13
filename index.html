@@ -215,6 +215,9 @@
 </head>
 <body class="bg-barber-dark text-barber-light font-sans antialiased selection:bg-barber-gold selection:text-black relative">
 
+    <!-- SCROLL PROGRESS BAR -->
+    <div id="page-progress" class="fixed top-0 left-0 h-1 bg-barber-gold z-[150] transition-all duration-75 ease-out w-0"></div>
+
     <!-- CHECKOUT MODAL -->
     <div id="checkout-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity duration-300" onclick="closeCheckout()"></div>
@@ -304,6 +307,29 @@
                     <button onclick="closeCheckout()" class="bg-white/10 text-white px-8 py-3 rounded-lg hover:bg-white hover:text-black transition uppercase font-bold text-sm tracking-widest">Fechar</button>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGAL DOCUMENT MODAL -->
+    <div id="legal-modal" class="fixed inset-0 z-[250] hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity duration-300" onclick="closeLegalModal()"></div>
+        <div class="bg-barber-card border border-white/10 w-full max-w-3xl h-[80vh] rounded-2xl relative flex flex-col shadow-2xl animate-fadeScale">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center p-6 border-b border-white/10 bg-black/40 rounded-t-2xl">
+                <h3 id="legal-title" class="text-xl font-bold text-white">Termos de Serviço</h3>
+                <button onclick="closeLegalModal()" class="text-gray-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto p-6 md:p-8 text-gray-300 text-sm leading-relaxed space-y-4" id="legal-content">
+                <!-- Text injected via JS -->
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 border-t border-white/10 bg-black/40 rounded-b-2xl text-center">
+                <button onclick="closeLegalModal()" class="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition">Fechar</button>
             </div>
         </div>
     </div>
@@ -470,6 +496,54 @@
             </div>
         </div>
     </header>
+
+    <!-- SEÇÃO: O QUE É A BARBERLABEL -->
+    <section class="py-16 md:py-32 bg-black border-t border-white/5 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
+                <div class="w-full lg:w-1/2 reveal-wrapper order-2 lg:order-1">
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-barber-gold/20 blur-[100px] rounded-full"></div>
+                        <div class="relative z-10 w-full rounded-2xl border border-white/10 shadow-2xl bg-[#0a0a0a] flex items-center justify-center p-12 aspect-[4/3] md:aspect-video group-hover:border-barber-gold/30 transition duration-500">
+                            <img src="https://i.imgur.com/lEKpbTj.png" alt="BarberLabel Logo" class="w-3/4 max-w-[300px] h-auto object-contain filter drop-shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                        </div>
+                        
+                        <div class="absolute -bottom-6 -right-6 z-20 bg-barber-card border border-barber-gold/30 p-6 rounded-xl shadow-xl animate-shake">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center text-green-500"><i class="fas fa-chart-line"></i></div>
+                                <div>
+                                    <p class="text-gray-400 text-[10px] uppercase tracking-wider">Crescimento</p>
+                                    <p class="text-white font-bold text-sm">Exponencial</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-1/2 reveal-wrapper order-1 lg:order-2">
+                    <span class="text-barber-gold font-bold tracking-widest uppercase text-xs mb-2 block">Quem Somos</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white">Muito mais que um <span class="text-gradient-gold">App</span></h2>
+                    <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
+                        A <strong>BarberLabel</strong> é a primeira plataforma focada em empoderar a marca da sua barbearia. Enquanto outros aplicativos promovem a marca *deles*, nós trabalhamos nos bastidores para que a <strong>SUA marca</strong> seja a estrela.
+                    </p>
+                    <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-8">
+                        Unimos agendamento inteligente, gestão financeira e marketing automatizado em uma ferramenta simples, criada por quem entende o dia a dia de uma barbearia de sucesso.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fas fa-bullseye text-barber-gold"></i> Foco no Barbeiro</h4>
+                            <p class="text-gray-500 text-xs">Ferramentas desenhadas para sua rotina, sem complexidade.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg mb-2 flex items-center gap-2"><i class="fas fa-infinity text-barber-gold"></i> Sem Limites</h4>
+                            <p class="text-gray-500 text-xs">Agendamentos ilimitados em todos os planos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section id="whitelabel" class="py-16 md:py-32 bg-barber-gray relative border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6">
@@ -649,11 +723,25 @@
 
     <section id="precos" class="py-16 md:py-32 bg-barber-gray border-t border-white/5">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-12 md:mb-20 reveal-wrapper">
+            <div class="text-center mb-8 md:mb-12 reveal-wrapper">
                 <h2 class="text-3xl md:text-5xl font-bold mb-4 md:mb-6 text-white">Investimento</h2>
                 <p class="text-barber-muted text-sm md:text-base">Planos flexíveis que crescem com sua barbearia.</p>
             </div>
             
+            <!-- PRICING TOGGLE -->
+            <div class="reveal-wrapper flex items-center justify-center gap-4 mb-12 select-none">
+                <span class="text-white text-sm font-bold uppercase tracking-wider transition-colors" id="label-mensal">Mensal</span>
+                
+                <button onclick="toggleBilling()" class="w-16 h-8 rounded-full bg-white/10 p-1 relative transition-colors duration-300 focus:outline-none ring-1 ring-white/10" id="billing-toggle">
+                    <div class="w-6 h-6 bg-barber-gold rounded-full shadow-md transform transition-transform duration-300 translate-x-0" id="billing-circle"></div>
+                </button>
+                
+                <div class="flex items-center gap-2">
+                    <span class="text-gray-500 text-sm font-bold uppercase tracking-wider transition-colors" id="label-anual">Anual</span>
+                    <span class="bg-green-500/20 text-green-500 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-500/30 animate-pulse">15% OFF</span>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                 
                 <!-- PLANO BÁSICO -->
@@ -661,8 +749,8 @@
                     <div class="tilt-card p-8 bg-barber-dark border border-white/5 hover:border-white/20 transition duration-300 flex flex-col h-full rounded relative overflow-hidden">
                         <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 mt-2">PLANO BÁSICO</span>
                         <div class="mb-6 md:mb-8">
-                            <span class="text-2xl md:text-3xl font-bold text-white">R$ 69,90</span>
-                            <div class="text-gray-500 text-xs mt-1">/mês</div>
+                            <span class="text-2xl md:text-3xl font-bold text-white">R$ <span id="price-basic">69,90</span></span>
+                            <div class="text-gray-500 text-xs mt-1" id="freq-basic">/mês</div>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-400 flex-1">
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> 1 Barbeiro</li>
@@ -670,7 +758,7 @@
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Agenda Online</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Link Exclusivo</li>
                         </ul>
-                        <a href="https://pay.cakto.com.br/vkc5vsb" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
+                        <a id="link-basic" href="https://pay.cakto.com.br/vkc5vsb" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
                     </div>
                 </div>
 
@@ -681,8 +769,8 @@
                         
                         <span class="text-xs font-bold text-barber-gold uppercase tracking-widest mb-4">INTERMEDIÁRIO</span>
                         <div class="mb-6 md:mb-8">
-                            <span class="text-3xl md:text-4xl font-bold text-white">R$ 89,90</span>
-                            <span class="text-gray-500 text-sm">/mês</span>
+                            <span class="text-3xl md:text-4xl font-bold text-white">R$ <span id="price-inter">89,90</span></span>
+                            <div class="text-gray-500 text-sm mt-1" id="freq-inter">/mês</div>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-300 flex-1">
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Até 3 Barbeiros</li>
@@ -690,7 +778,7 @@
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Relatórios Financeiros</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Notificações WhatsApp</li>
                         </ul>
-                        <a href="https://pay.cakto.com.br/reyxcpa_720162" target="_blank" class="w-full py-3 md:py-4 text-center bg-barber-gold text-black text-xs font-bold uppercase tracking-widest hover:bg-barber-goldhover transition cursor-pointer rounded block">Escolher</a>
+                        <a id="link-inter" href="https://pay.cakto.com.br/reyxcpa_720162" target="_blank" class="w-full py-3 md:py-4 text-center bg-barber-gold text-black text-xs font-bold uppercase tracking-widest hover:bg-barber-goldhover transition cursor-pointer rounded block">Escolher</a>
                     </div>
                 </div>
 
@@ -699,8 +787,8 @@
                     <div class="tilt-card p-8 bg-barber-dark border border-white/5 hover:border-white/20 transition duration-300 flex flex-col h-full rounded">
                         <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">PLANO PRO</span>
                         <div class="mb-6 md:mb-8">
-                            <span class="text-2xl md:text-3xl font-bold text-white">R$ 179,90</span>
-                             <div class="text-gray-500 text-xs mt-1">/mês</div>
+                            <span class="text-2xl md:text-3xl font-bold text-white">R$ <span id="price-pro">179,90</span></span>
+                             <div class="text-gray-500 text-xs mt-1" id="freq-pro">/mês</div>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-400 flex-1">
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Barbeiros Ilimitados</li>
@@ -708,7 +796,7 @@
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> API & Integrações</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Gerente de Contas</li>
                         </ul>
-                        <a href="https://pay.cakto.com.br/6n6ur6h" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
+                        <a id="link-pro" href="https://pay.cakto.com.br/6n6ur6h" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
                     </div>
                 </div>
 
@@ -776,6 +864,42 @@
                     </div>
                 </div>
 
+                <div class="faq-item">
+                    <button class="w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg font-bold text-white">Posso usar meu domínio próprio?</span>
+                        <i class="fas fa-plus text-barber-gold transition-transform duration-300 text-xl"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="px-8 pb-8 pt-2 text-gray-400 text-base leading-relaxed border-t border-white/5 mt-2">
+                            Sim! Em qualquer plano, você pode conectar seu domínio personalizado (ex: suabarbearia.com.br) para fortalecer ainda mais sua marca. Caso não tenha um, fornecemos um link exclusivo e curto.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg font-bold text-white">Como funciona o suporte?</span>
+                        <i class="fas fa-plus text-barber-gold transition-transform duration-300 text-xl"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="px-8 pb-8 pt-2 text-gray-400 text-base leading-relaxed border-t border-white/5 mt-2">
+                            Oferecemos suporte humanizado via WhatsApp para todos os planos durante o horário comercial. Nossa equipe é treinada para resolver dúvidas técnicas e ajudar na configuração da sua barbearia.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="text-lg font-bold text-white">Consigo importar meus clientes atuais?</span>
+                        <i class="fas fa-plus text-barber-gold transition-transform duration-300 text-xl"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="px-8 pb-8 pt-2 text-gray-400 text-base leading-relaxed border-t border-white/5 mt-2">
+                            Com certeza. Temos uma ferramenta de importação fácil onde você pode subir sua lista de clientes via planilha, ou nossa equipe pode auxiliar nesse processo para garantir que você não perca nenhum dado.
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -821,14 +945,82 @@
                 <a href="https://wa.me/5547989221849" target="_blank" class="text-gray-500 hover:text-white transition"><i class="fab fa-whatsapp text-xl"></i></a>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-white/5 text-center md:text-left text-gray-600 text-[10px] tracking-widest uppercase">
-            BarberLabel &copy; 2026
+        
+        <!-- RODAPÉ INFERIOR COM LINKS JURÍDICOS -->
+        <div class="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left text-gray-600 text-[10px] tracking-widest uppercase">
+            <div>BarberLabel &copy; 2026</div>
+            <div class="flex gap-6">
+                <a href="#" onclick="openLegalModal('terms'); return false;" class="hover:text-barber-gold transition decoration-transparent">Termos de Serviço</a>
+                <a href="#" onclick="openLegalModal('conditions'); return false;" class="hover:text-barber-gold transition decoration-transparent">Condições de Uso</a>
+            </div>
         </div>
     </footer>
 
     <a id="whatsapp-float" href="https://wa.me/5547989221849?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." target="_blank" class="fixed bottom-6 right-6 z-50 bg-barber-whatsapp text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl whatsapp-btn hover:scale-110 transition-all duration-300 md:mb-0"><i class="fab fa-whatsapp text-3xl"></i></a>
 
     <script>
+        // --- LEGAL DOCS CONTENT ---
+        const legalDocs = {
+            terms: {
+                title: "Termos de Serviço",
+                content: `
+                    <p class="font-bold text-white mb-2">1. Aceitação dos Termos</p>
+                    <p>Ao acessar e usar o software BarberLabel, você concorda em cumprir e ficar vinculado aos seguintes termos e condições.</p>
+                    
+                    <p class="font-bold text-white mb-2 mt-4">2. Descrição do Serviço</p>
+                    <p>O BarberLabel é uma plataforma SaaS (Software as a Service) que fornece ferramentas de agendamento, gestão e marketing para barbearias. O serviço é fornecido "como está" e "conforme disponível".</p>
+
+                    <p class="font-bold text-white mb-2 mt-4">3. Planos e Pagamentos</p>
+                    <p>O serviço é oferecido em planos de assinatura (Básico, Intermediário e Pro). O pagamento é processado de forma segura através de gateways parceiros. O não pagamento pode resultar na suspensão temporária do acesso.</p>
+
+                    <p class="font-bold text-white mb-2 mt-4">4. Cancelamento e Reembolso</p>
+                    <p>Oferecemos uma garantia incondicional de 7 dias. Se dentro deste período você não estiver satisfeito, devolveremos 100% do valor pago. Após este período, o cancelamento pode ser feito a qualquer momento, interrompendo a renovação automática para o próximo ciclo.</p>
+
+                    <p class="font-bold text-white mb-2 mt-4">5. Responsabilidades</p>
+                    <p>Você é responsável por manter a confidencialidade de sua conta e senha. O BarberLabel não se responsabiliza por perdas decorrentes do uso não autorizado de sua conta.</p>
+                `
+            },
+            conditions: {
+                title: "Condições de Uso",
+                content: `
+                    <p class="font-bold text-white mb-2">1. Uso Permitido</p>
+                    <p>Você concorda em usar o BarberLabel apenas para fins legais e de acordo com estes termos. É proibido usar o serviço para qualquer atividade fraudulenta ou que viole direitos de terceiros.</p>
+                    
+                    <p class="font-bold text-white mb-2 mt-4">2. Propriedade Intelectual</p>
+                    <p>Todo o conteúdo, design, gráficos e código do BarberLabel são propriedade intelectual da nossa empresa e estão protegidos por leis de direitos autorais. O "White Label" concede a você o direito de usar a tecnologia com sua marca, mas não transfere a propriedade do código-fonte.</p>
+
+                    <p class="font-bold text-white mb-2 mt-4">3. Dados e Privacidade</p>
+                    <p>Respeitamos a sua privacidade e a de seus clientes. Os dados inseridos na plataforma pertencem a você e podem ser exportados. Não vendemos seus dados para terceiros.</p>
+
+                    <p class="font-bold text-white mb-2 mt-4">4. Modificações</p>
+                    <p>Reservamo-nos o direito de modificar estas condições a qualquer momento. As alterações entrarão em vigor assim que publicadas nesta página.</p>
+                    
+                    <p class="font-bold text-white mb-2 mt-4">5. Disponibilidade</p>
+                    <p>Embora nos esforcemos para manter 99.9% de uptime, não garantimos que o serviço será ininterrupto ou livre de erros.</p>
+                `
+            }
+        };
+
+        function openLegalModal(type) {
+            const modal = document.getElementById('legal-modal');
+            const title = document.getElementById('legal-title');
+            const content = document.getElementById('legal-content');
+            
+            if(legalDocs[type]) {
+                title.innerText = legalDocs[type].title;
+                content.innerHTML = legalDocs[type].content;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLegalModal() {
+            const modal = document.getElementById('legal-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+
         // --- HYPERCASH PAYMENT INTEGRATION ---
         const HYPERCASH_PUBLIC_KEY = "pk_04db5d148c2a377f0dc2db466e8e2929d1abafbd";
         
@@ -1205,6 +1397,69 @@
         setInterval(() => {
             if(Math.random() > 0.5) showSocialProof();
         }, 45000);
+
+        // 12. SCROLL PROGRESS
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = (scrollTop / scrollHeight) * 100;
+            document.getElementById('page-progress').style.width = scrollPercentage + "%";
+        });
+
+        // 13. PRICING TOGGLE
+        let isAnnual = false;
+        function toggleBilling() {
+            isAnnual = !isAnnual;
+            const circle = document.getElementById('billing-circle');
+            const labelMensal = document.getElementById('label-mensal');
+            const labelAnual = document.getElementById('label-anual');
+            
+            // Visual Update
+            if(isAnnual) {
+                circle.classList.remove('translate-x-0');
+                circle.classList.add('translate-x-8');
+                labelMensal.classList.replace('text-white', 'text-gray-500');
+                labelAnual.classList.replace('text-gray-500', 'text-white');
+            } else {
+                circle.classList.add('translate-x-0');
+                circle.classList.remove('translate-x-8');
+                labelMensal.classList.replace('text-gray-500', 'text-white');
+                labelAnual.classList.replace('text-white', 'text-gray-500');
+            }
+            
+            // Price Update Logic
+            // Monthly: 69.90, 89.90, 179.90
+            // Annual (15% off): ~59.40, ~76.40, ~152.90
+            const prices = {
+                basic: { m: "69,90", a: "59,40" },
+                inter: { m: "89,90", a: "76,40" },
+                pro: { m: "179,90", a: "152,90" }
+            };
+
+            // Link Update Logic
+            const links = {
+                basic: { m: "https://pay.cakto.com.br/vkc5vsb", a: "https://pay.cakto.com.br/433jjyk" },
+                inter: { m: "https://pay.cakto.com.br/reyxcpa_720162", a: "https://pay.cakto.com.br/3f237eu" },
+                pro: { m: "https://pay.cakto.com.br/6n6ur6h", a: "https://pay.cakto.com.br/392792k" }
+            };
+
+            const suffix = isAnnual ? "em até 12x | pagamento único" : "/mês";
+
+            // Update Prices & Frequency
+            document.getElementById('price-basic').innerText = isAnnual ? prices.basic.a : prices.basic.m;
+            document.getElementById('freq-basic').innerText = suffix;
+
+            document.getElementById('price-inter').innerText = isAnnual ? prices.inter.a : prices.inter.m;
+            document.getElementById('freq-inter').innerText = suffix;
+
+            document.getElementById('price-pro').innerText = isAnnual ? prices.pro.a : prices.pro.m;
+            document.getElementById('freq-pro').innerText = suffix;
+
+            // Update Links
+            document.getElementById('link-basic').href = isAnnual ? links.basic.a : links.basic.m;
+            document.getElementById('link-inter').href = isAnnual ? links.inter.a : links.inter.m;
+            document.getElementById('link-pro').href = isAnnual ? links.pro.a : links.pro.m;
+        }
 
     </script>
 </body>
