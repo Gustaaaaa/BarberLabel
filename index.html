@@ -37,6 +37,8 @@
                     animation: {
                         'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
                         'fadeScale': 'fadeScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'slideUp': 'slideUp 0.5s ease-out forwards',
                     },
                     keyframes: {
                         shake: {
@@ -48,6 +50,10 @@
                         fadeScale: {
                             '0%': { opacity: '0', transform: 'scale(0.95) translateY(10px)' },
                             '100%': { opacity: '1', transform: 'scale(1) translateY(0)' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
                         }
                     }
                 }
@@ -166,10 +172,143 @@
             box-shadow: -10px 0 30px rgba(0,0,0,0.8);
             height: 100dvh; 
         }
+
+        /* --- CHECKOUT MODAL STYLES --- */
+        .glass-modal {
+            background: rgba(22, 22, 22, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+        }
+        .form-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        .form-input:focus {
+            border-color: #d4af37;
+            background-color: rgba(255, 255, 255, 0.1);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+        }
+        .checkout-loader {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #d4af37;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- SOCIAL PROOF TOAST --- */
+        #social-proof-toast {
+            z-index: 90;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        #social-proof-toast.hidden-toast {
+            transform: translateX(-120%);
+            opacity: 0;
+        }
     </style>
 </head>
 <body class="bg-barber-dark text-barber-light font-sans antialiased selection:bg-barber-gold selection:text-black relative">
 
+    <!-- CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity duration-300" onclick="closeCheckout()"></div>
+        
+        <!-- Modal Content -->
+        <div class="glass-modal relative w-full max-w-lg rounded-2xl overflow-hidden transform transition-all duration-500 scale-95 opacity-0 translate-y-10" id="checkout-content">
+            
+            <!-- Header -->
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/40">
+                <div>
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fas fa-lock text-barber-gold"></i> Checkout Seguro
+                    </h3>
+                    <p class="text-gray-500 text-xs mt-1">Processado via HyperCash</p>
+                </div>
+                <button onclick="closeCheckout()" class="text-gray-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6 md:p-8">
+                <!-- Order Summary -->
+                <div class="bg-white/5 rounded-lg p-4 mb-6 flex justify-between items-center border border-white/5">
+                    <div>
+                        <p class="text-gray-400 text-xs uppercase tracking-wider">Plano Selecionado</p>
+                        <h4 id="checkout-plan-name" class="text-white font-bold text-lg">Plano Básico</h4>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider">Valor</p>
+                        <h4 id="checkout-plan-price" class="text-barber-gold font-bold text-xl">R$ 69,90</h4>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <form id="payment-form" onsubmit="processPayment(event)" class="space-y-4">
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nome no Cartão</label>
+                            <input type="text" required class="form-input w-full px-4 py-3 rounded-lg text-sm" placeholder="Como impresso no cartão">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Número do Cartão</label>
+                            <div class="relative">
+                                <input type="text" id="card-number" required maxlength="19" class="form-input w-full px-4 py-3 rounded-lg text-sm pl-12" placeholder="0000 0000 0000 0000">
+                                <i class="far fa-credit-card absolute left-4 top-3.5 text-gray-500"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Validade</label>
+                            <input type="text" id="card-expiry" required maxlength="5" class="form-input w-full px-4 py-3 rounded-lg text-sm" placeholder="MM/AA">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">CVV</label>
+                            <div class="relative">
+                                <input type="text" required maxlength="4" class="form-input w-full px-4 py-3 rounded-lg text-sm" placeholder="123">
+                                <i class="fas fa-question-circle absolute right-4 top-3.5 text-gray-600 text-xs" title="Código de 3 dígitos no verso"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">CPF do Titular</label>
+                        <input type="text" id="card-cpf" required maxlength="14" class="form-input w-full px-4 py-3 rounded-lg text-sm" placeholder="000.000.000-00">
+                    </div>
+
+                    <button type="submit" id="pay-button" class="w-full mt-6 bg-barber-gold text-black font-bold uppercase tracking-widest py-4 rounded-lg hover:bg-white transition-all duration-300 shadow-lg hover:shadow-barber-gold/20 flex items-center justify-center gap-3">
+                        <span>Pagar Agora</span>
+                        <div id="btn-loader" class="checkout-loader hidden"></div>
+                    </button>
+                    
+                    <p class="text-center text-[10px] text-gray-600 mt-4 flex items-center justify-center gap-2">
+                        <i class="fas fa-lock"></i> Ambiente Seguro criptografado 256-bit
+                    </p>
+                </form>
+
+                <!-- Success State (Hidden by default) -->
+                <div id="payment-success" class="hidden text-center py-8">
+                    <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/50">
+                        <i class="fas fa-check text-4xl text-green-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Pagamento Aprovado!</h3>
+                    <p class="text-gray-400 text-sm mb-8">Seu acesso ao BarberLabel foi liberado. Verifique seu e-mail.</p>
+                    <button onclick="closeCheckout()" class="bg-white/10 text-white px-8 py-3 rounded-lg hover:bg-white hover:text-black transition uppercase font-bold text-sm tracking-widest">Fechar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ENTRY POPUP (Mantido) -->
     <div id="entry-popup" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-500" onclick="closePopup()"></div>
         <div class="relative bg-barber-card border border-barber-gold/30 rounded-2xl p-8 max-w-md w-full shadow-2xl overflow-hidden animate-fadeScale">
@@ -188,6 +327,27 @@
                 <p class="text-[10px] text-gray-500 mt-4 uppercase tracking-widest cursor-pointer hover:text-white transition" onclick="closePopup()">Não, obrigado</p>
             </div>
         </div>
+    </div>
+
+    <!-- SOCIAL PROOF TOAST -->
+    <div id="social-proof-toast" class="fixed bottom-4 left-4 z-[90] hidden-toast md:bottom-8 md:left-8 bg-barber-card border border-white/10 p-4 rounded-xl shadow-2xl max-w-xs flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+            <i class="fas fa-check text-green-500 text-sm"></i>
+        </div>
+        <div>
+            <p class="text-white text-xs font-bold leading-tight" id="sp-text">A Barbearia Viking acabou de assinar o Plano Pro</p>
+            <p class="text-gray-500 text-[10px] mt-0.5">há 2 minutos</p>
+        </div>
+        <button onclick="document.getElementById('social-proof-toast').classList.add('hidden-toast')" class="absolute top-2 right-2 text-gray-600 hover:text-white"><i class="fas fa-times text-[10px]"></i></button>
+    </div>
+
+    <!-- STICKY CTA MOBILE -->
+    <div id="sticky-cta" class="fixed bottom-0 left-0 w-full bg-[#111] border-t border-white/10 p-4 z-[80] transform translate-y-full transition-transform duration-300 md:hidden flex justify-between items-center shadow-[0_-10px_30px_rgba(0,0,0,0.8)]">
+        <div class="text-white">
+            <p class="text-[10px] uppercase tracking-wider text-gray-400">A partir de</p>
+            <p class="font-bold text-barber-gold">R$ 69,90<span class="text-xs text-gray-500 font-normal">/mês</span></p>
+        </div>
+        <a href="#precos" class="bg-barber-gold text-black px-6 py-3 rounded-lg font-bold uppercase text-xs tracking-widest hover:bg-white transition shadow-lg">Ver Planos</a>
     </div>
 
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 border-b border-white/5 bg-[#050505]/80 backdrop-blur-md">
@@ -258,11 +418,11 @@
         </div>
     </nav>
 
-    <header class="relative min-h-screen flex items-center justify-center overflow-hidden bg-tech-grid pt-20 md:pt-0">
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden bg-tech-grid pt-28 pb-10 md:pt-32 md:pb-16">
         <div class="absolute inset-0 vignette-overlay pointer-events-none z-0"></div>
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-barber-gold/10 rounded-full blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
 
-        <div id="hero-content" class="relative z-10 max-w-5xl mx-auto px-6 text-center flex flex-col items-center justify-center h-full">
+        <div id="hero-content" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center justify-center h-full">
             <div class="mb-6 md:mb-10 opacity-0 animate-fadeIn" style="animation-delay: 0.2s;">
                 <span class="px-3 py-1.5 md:px-5 md:py-2 rounded border border-barber-gold/20 bg-black/50 text-barber-gold text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.4em] uppercase backdrop-blur-md whitespace-nowrap">
                     O Seu Aplicativo Próprio
@@ -276,22 +436,37 @@
                 </div>
             </h1>
 
-            <p class="text-gray-400 text-sm md:text-xl mb-10 md:mb-12 max-w-lg md:max-w-2xl mx-auto leading-relaxed font-light opacity-0 animate-fadeInUp px-2" style="animation-delay: 0.6s;">
-                Não seja apenas mais um no app dos outros. Tenha uma plataforma exclusiva de agendamento com a <strong>sua logo</strong> e fidelize seus clientes.
-            </p>
+            <div class="relative z-40 mt-4 w-full mb-8 reveal-wrapper opacity-0 animate-fadeInUp" style="animation-delay: 0.6s;">
+                <div class="max-w-6xl mx-auto bg-gradient-to-r from-barber-gold to-[#fceeb5] rounded-xl p-[1px] shadow-[0_10px_40px_-10px_rgba(212,175,55,0.3)]">
+                    <div class="bg-[#111] rounded-xl px-5 py-5 md:px-8 md:py-5 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 border border-white/10">
+                        
+                        <!-- Decorative Elements -->
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-barber-gold/10 rounded-full blur-[80px] pointer-events-none -mr-32 -mt-32"></div>
+                        
+                        <div class="relative z-10 text-center md:text-left">
+                            <div class="inline-flex items-center gap-2 text-barber-gold text-[10px] font-bold uppercase tracking-[0.2em] mb-3 border border-barber-gold/30 px-3 py-1 rounded-full bg-barber-gold/5 justify-center md:justify-start">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                                Oportunidade
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">
+                                Sua barbearia em outro <span class="text-barber-gold italic">nível</span>.
+                            </h3>
+                            <p class="text-gray-400 text-sm md:text-base max-w-lg leading-relaxed">
+                                Pare de perder tempo no WhatsApp. Tenha um sistema completo a partir de <strong>R$ 69,90/mês</strong>.
+                            </p>
+                        </div>
 
-            <div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full justify-center items-center opacity-0 animate-fadeInUp px-2" style="animation-delay: 0.8s;">
-                <a href="#precos" class="nav-link w-full sm:w-auto text-center group relative px-8 py-4 bg-barber-gold text-black font-bold text-sm uppercase tracking-[0.2em] overflow-hidden hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(212,175,55,0.2)] cursor-pointer rounded">
-                    <span class="relative z-10">Criar meu App</span>
-                    <div class="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out skew-x-12"></div>
-                </a>
-                
-                <a href="#contato" class="nav-link w-full sm:w-auto text-center text-white text-xs md:text-sm font-medium uppercase tracking-[0.2em] hover:text-barber-gold transition flex items-center justify-center gap-3 group cursor-pointer border border-white/10 sm:border-transparent rounded px-8 py-4 sm:p-0">
-                    <div class="w-10 h-10 hidden sm:flex rounded border border-white/10 items-center justify-center group-hover:border-barber-gold transition">
-                        <i class="fas fa-calendar-check text-xs transform group-hover:scale-110 transition"></i>
+                        <div class="relative z-10 flex flex-col gap-3 w-full md:w-auto shrink-0">
+                            <a href="#precos" class="bg-barber-gold text-black px-8 py-4 rounded-lg font-bold uppercase tracking-widest text-xs md:text-sm hover:bg-white transition-all duration-300 shadow-lg hover:shadow-barber-gold/25 text-center flex items-center justify-center gap-2 group">
+                                Ver Planos
+                                <i class="fas fa-chevron-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            <span class="text-[10px] text-gray-500 text-center uppercase tracking-wider">
+                                <i class="fas fa-shield-alt text-barber-gold mr-1"></i> 7 dias de garantia
+                            </span>
+                        </div>
                     </div>
-                    SOLICITAR DEMO
-                </a>
+                </div>
             </div>
         </div>
     </header>
@@ -310,7 +485,85 @@
         </div>
     </section>
 
-    <section class="py-16 md:py-20 bg-black border-y border-white/5 relative overflow-hidden" id="stats-section">
+    <!-- SEÇÃO: DASHBOARD DETALHADO -->
+    <section class="py-16 md:py-24 bg-black relative border-t border-white/5 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 text-center reveal-wrapper">
+             <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white">Gestão <span class="text-gradient-gold">Completa</span></h2>
+             <p class="text-barber-muted max-w-2xl mx-auto text-sm md:text-lg font-light leading-relaxed mb-12">
+                Tenha o controle total da sua barbearia no computador. Relatórios, agendamentos e gestão financeira em uma tela incrível.
+             </p>
+             <div class="relative max-w-5xl mx-auto rounded-xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden group">
+                <div class="absolute inset-0 bg-barber-gold/5 pointer-events-none group-hover:bg-barber-gold/10 transition duration-500 z-10"></div>
+                <!-- Barra de título simulada estilo Mac -->
+                <div class="h-8 bg-[#1a1a1a] border-b border-white/5 flex items-center px-4 gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <img src="https://i.imgur.com/4pjsQjf.png" alt="Dashboard BarberLabel Desktop" class="w-full h-auto object-cover transform hover:scale-[1.01] transition duration-700">
+             </div>
+        </div>
+    </section>
+
+    <!-- NOVA SEÇÃO: MOBILE APP PWA -->
+    <section class="py-16 md:py-32 bg-barber-gray relative border-t border-white/5 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-24">
+                <!-- Text Side -->
+                <div class="w-full md:w-1/2 reveal-wrapper order-2 md:order-1">
+                    <span class="text-barber-gold font-bold tracking-widest uppercase text-xs mb-4 block">Experiência do Cliente</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white leading-tight">
+                        Agendamento em <br><span class="text-gradient-gold">3 Cliques</span>
+                    </h2>
+                    <p class="text-gray-400 text-sm md:text-lg font-light leading-relaxed mb-8">
+                        Seus clientes não precisam baixar nada na loja se não quiserem. Com nossa tecnologia <strong>PWA (Progressive Web App)</strong>, seu app roda liso no navegador e pode ser instalado direto na tela inicial.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 rounded-xl bg-black border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-barber-gold/50 transition duration-300">
+                                <i class="fab fa-apple text-2xl text-white group-hover:text-barber-gold transition"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">Compatibilidade Total</h4>
+                                <p class="text-gray-500 text-xs md:text-sm">Funciona perfeitamente em iPhones (iOS) e Androids. Sem travamentos.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 rounded-xl bg-black border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-barber-gold/50 transition duration-300">
+                                <i class="fas fa-memory text-xl text-white group-hover:text-barber-gold transition"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">Ultra Leve</h4>
+                                <p class="text-gray-500 text-xs md:text-sm">Não ocupa a memória do celular do cliente. Menos barreiras, mais agendamentos.</p>
+                            </div>
+                        </div>
+
+                         <div class="flex items-start gap-4 group">
+                            <div class="w-12 h-12 rounded-xl bg-black border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-barber-gold/50 transition duration-300">
+                                <i class="fas fa-bell text-xl text-white group-hover:text-barber-gold transition"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">Lembretes Automáticos</h4>
+                                <p class="text-gray-500 text-xs md:text-sm">O cliente recebe notificação antes do corte. Reduza o "bolo" a zero.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Image Side -->
+                <div class="w-full md:w-1/2 reveal-wrapper order-1 md:order-2 flex justify-center relative">
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-barber-gold/5 blur-[60px] rounded-full pointer-events-none"></div>
+                    <div class="relative z-10 w-[280px] md:w-[350px] transform hover:rotate-1 transition duration-700">
+                        <img src="https://i.imgur.com/EHnTwW4.png" alt="BarberLabel App Mobile Interface" class="w-full h-auto drop-shadow-2xl rounded-[2.5rem] border-[8px] border-[#121212]">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-20 bg-barber-dark border-y border-white/5 relative overflow-hidden" id="stats-section">
         <div class="absolute left-0 top-0 w-full h-full opacity-5 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         <div class="max-w-7xl mx-auto px-6 relative z-10">
              <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
@@ -403,55 +656,59 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                 
+                <!-- PLANO BÁSICO -->
                 <div class="reveal-wrapper">
                     <div class="tilt-card p-8 bg-barber-dark border border-white/5 hover:border-white/20 transition duration-300 flex flex-col h-full rounded relative overflow-hidden">
-                        <div class="absolute top-0 left-0 bg-white/20 text-white text-[9px] font-bold px-3 py-1 uppercase tracking-widest rounded-br">Economia</div>
-                        <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 mt-2">ANUAL</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 mt-2">PLANO BÁSICO</span>
                         <div class="mb-6 md:mb-8">
-                            <span class="text-2xl md:text-3xl font-bold text-white">12x R$ 160</span>
-                            <div class="text-gray-500 text-xs mt-1">Pagamento Único</div>
+                            <span class="text-2xl md:text-3xl font-bold text-white">R$ 69,90</span>
+                            <div class="text-gray-500 text-xs mt-1">/mês</div>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-400 flex-1">
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Até 5 Barbeiros</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> 1 Barbeiro</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> App White Label</li>
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Serviços Ilimitados</li>
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Notificações Push</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Agenda Online</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Link Exclusivo</li>
                         </ul>
-                        <a href="https://pay.cakto.com.br/433jjyk" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
+                        <a href="https://pay.cakto.com.br/vkc5vsb" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
                     </div>
                 </div>
 
+                <!-- PLANO INTERMEDIÁRIO -->
                 <div class="reveal-wrapper">
                     <div class="tilt-card p-8 bg-black border border-barber-gold relative shadow-[0_0_50px_rgba(212,175,55,0.1)] flex flex-col h-full rounded transform">
                         <div class="absolute top-0 right-0 bg-barber-gold text-black text-[10px] font-bold px-3 py-1 uppercase tracking-widest rounded-bl">Recomendado</div>
                         
-                        <span class="text-xs font-bold text-barber-gold uppercase tracking-widest mb-4">BARBERLABEL</span>
+                        <span class="text-xs font-bold text-barber-gold uppercase tracking-widest mb-4">INTERMEDIÁRIO</span>
                         <div class="mb-6 md:mb-8">
-                            <span class="text-3xl md:text-4xl font-bold text-white">R$ 200</span>
+                            <span class="text-3xl md:text-4xl font-bold text-white">R$ 89,90</span>
                             <span class="text-gray-500 text-sm">/mês</span>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-300 flex-1">
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Até 5 Barbeiros</li>
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> App White Label</li>
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Serviços Ilimitados</li>
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Notificações Push</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Até 3 Barbeiros</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Tudo do Básico</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Relatórios Financeiros</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Notificações WhatsApp</li>
                         </ul>
                         <a href="https://pay.cakto.com.br/reyxcpa_720162" target="_blank" class="w-full py-3 md:py-4 text-center bg-barber-gold text-black text-xs font-bold uppercase tracking-widest hover:bg-barber-goldhover transition cursor-pointer rounded block">Escolher</a>
                     </div>
                 </div>
 
+                <!-- PLANO PRO -->
                 <div class="reveal-wrapper md:delay-100">
                     <div class="tilt-card p-8 bg-barber-dark border border-white/5 hover:border-white/20 transition duration-300 flex flex-col h-full rounded">
-                        <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Franquia</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">PLANO PRO</span>
                         <div class="mb-6 md:mb-8">
-                            <span class="text-2xl md:text-3xl font-bold text-white">Consultar</span>
+                            <span class="text-2xl md:text-3xl font-bold text-white">R$ 179,90</span>
+                             <div class="text-gray-500 text-xs mt-1">/mês</div>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-400 flex-1">
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Multi-unidades</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Barbeiros Ilimitados</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Múltiplas Unidades</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> API & Integrações</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Gerente de Contas</li>
                         </ul>
-                        <a href="#contato" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Contatar</a>
+                        <a href="https://pay.cakto.com.br/6n6ur6h" target="_blank" class="w-full py-3 md:py-4 text-center border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition cursor-pointer rounded block">Escolher</a>
                     </div>
                 </div>
 
@@ -551,19 +808,107 @@
             <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                 <img src="https://i.imgur.com/lEKpbTj.png" alt="BarberLabel Logo" class="h-8 md:h-10 w-auto object-contain grayscale hover:grayscale-0 transition duration-300">
             </div>
-            <div class="text-gray-600 text-xs tracking-widest uppercase text-center md:text-left">BarberLabel &copy; 2026</div>
+            
+            <!-- NOVOS SELOS DE SEGURANÇA -->
+            <div class="flex gap-4 md:gap-8 items-center text-gray-500 text-[10px] uppercase tracking-widest font-bold">
+                <span class="flex items-center gap-2"><i class="fas fa-lock text-barber-gold"></i> Compra Segura</span>
+                <span class="flex items-center gap-2"><i class="fas fa-shield-alt text-barber-gold"></i> Garantia 7 Dias</span>
+                <span class="flex items-center gap-2 hidden sm:flex"><i class="fas fa-headset text-barber-gold"></i> Suporte Humanizado</span>
+            </div>
+
             <div class="flex gap-6">
                 <a href="https://www.instagram.com/usebarberlabel/" target="_blank" class="text-gray-500 hover:text-white transition"><i class="fab fa-instagram text-xl"></i></a>
                 <a href="https://wa.me/5547989221849" target="_blank" class="text-gray-500 hover:text-white transition"><i class="fab fa-whatsapp text-xl"></i></a>
             </div>
         </div>
+        <div class="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-white/5 text-center md:text-left text-gray-600 text-[10px] tracking-widest uppercase">
+            BarberLabel &copy; 2026
+        </div>
     </footer>
 
-    <a href="https://wa.me/5547989221849?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." target="_blank" class="fixed bottom-6 right-6 z-50 bg-barber-whatsapp text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl whatsapp-btn hover:scale-110 transition-transform duration-300"><i class="fab fa-whatsapp text-3xl"></i></a>
+    <a id="whatsapp-float" href="https://wa.me/5547989221849?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais." target="_blank" class="fixed bottom-6 right-6 z-50 bg-barber-whatsapp text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl whatsapp-btn hover:scale-110 transition-all duration-300 md:mb-0"><i class="fab fa-whatsapp text-3xl"></i></a>
 
     <script>
+        // --- HYPERCASH PAYMENT INTEGRATION ---
+        const HYPERCASH_PUBLIC_KEY = "pk_04db5d148c2a377f0dc2db466e8e2929d1abafbd";
+        
+        // NOTA DE SEGURANÇA:
+        // A Credencial Secreta (sk_2ee9c8262371a6259044aa138570b4858eda1892) NUNCA deve ser usada no Front-End.
+        // Ela permitiria que qualquer pessoa estornasse pagamentos.
+        // Em um app real, ela fica no seu servidor Backend.
+        
+        // Checkout UI Logic
+        const modal = document.getElementById('checkout-modal');
+        const modalContent = document.getElementById('checkout-content');
+        
+        function openCheckout(planName, planPrice) {
+            document.getElementById('checkout-plan-name').innerText = planName;
+            document.getElementById('checkout-plan-price').innerText = "R$ " + planPrice;
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0', 'translate-y-10');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCheckout() {
+            modalContent.classList.add('scale-95', 'opacity-0', 'translate-y-10');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Reset form
+                document.getElementById('payment-form').classList.remove('hidden');
+                document.getElementById('payment-success').classList.add('hidden');
+                document.getElementById('payment-form').reset();
+            }, 300);
+            document.body.style.overflow = 'auto';
+        }
+
+        function processPayment(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('pay-button');
+            const loader = document.getElementById('btn-loader');
+            const btnText = btn.querySelector('span');
+            
+            // UI Loading State
+            btnText.innerText = "Processando...";
+            loader.classList.remove('hidden');
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            // SIMULAÇÃO DA CHAMADA API HYPERCASH
+            // Em produção: fetch('https://api.hypercash.com.br/v1/transactions', { headers: { 'Authorization': 'Bearer ' + HYPERCASH_PUBLIC_KEY } })
+            
+            setTimeout(() => {
+                // Sucesso simulado após 2 segundos
+                document.getElementById('payment-form').classList.add('hidden');
+                document.getElementById('payment-success').classList.remove('hidden');
+                
+                // Reset button state
+                btnText.innerText = "Pagar Agora";
+                loader.classList.add('hidden');
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            }, 2000);
+        }
+
+        // Input Masks (Card & CPF)
+        document.getElementById('card-number').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+        });
+        document.getElementById('card-expiry').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/\D/g, '').replace(/(\d{2})(\d)/, '$1/$2').replace(/(\d{2})\/(\d{2}).*/, '$1/$2');
+        });
+        document.getElementById('card-cpf').addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/);
+            e.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + (x[3] ? '.' + x[3] : '') + (x[4] ? '-' + x[4] : '');
+        });
+
+
         // 1. MENU MOBILE DRAWER
-        const btn = document.getElementById('mobile-menu-btn');
+        const btnMenu = document.getElementById('mobile-menu-btn');
         const overlay = document.getElementById('mobile-menu-overlay');
         const drawer = document.getElementById('mobile-menu-drawer');
         const body = document.body;
@@ -582,7 +927,7 @@
                 body.classList.remove('overflow-hidden'); // Libera Scroll
             }
         }
-        btn.addEventListener('click', toggleMenu);
+        btnMenu.addEventListener('click', toggleMenu);
 
         // 2. SMOOTH SCROLL (DESKTOP & MOBILE FIX)
         document.querySelectorAll('a[href^="#"], .nav-link').forEach(anchor => {
@@ -808,7 +1153,59 @@
             entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal-wrapper').forEach(el => revealObserver.observe(el));
+
+        // 10. STICKY CTA SCROLL LOGIC & WHATSAPP ADJUSTMENT
+        const stickyCta = document.getElementById('sticky-cta');
+        const heroSection = document.getElementById('hero-content');
+        const whatsappFloat = document.getElementById('whatsapp-float'); // Novo ID
+        const precosSection = document.getElementById('precos'); // Nova referência
+
+        window.addEventListener('scroll', () => {
+            const heroBottom = heroSection.getBoundingClientRect().bottom;
+            const precosRect = precosSection.getBoundingClientRect();
+            
+            // Check if Hero is past
+            const isHeroPast = heroBottom < 0;
+            
+            // Check if Pricing Section is currently visible in viewport
+            const isPrecosVisible = precosRect.top < window.innerHeight && precosRect.bottom > 0;
+            
+            // Show Sticky CTA only if Hero is past AND Pricing is NOT visible
+            if (isHeroPast && !isPrecosVisible) {
+                stickyCta.classList.remove('translate-y-full');
+                // Adiciona classe para subir o WhatsApp no mobile
+                whatsappFloat.classList.add('mb-20');
+            } else {
+                stickyCta.classList.add('translate-y-full');
+                // Remove classe
+                whatsappFloat.classList.remove('mb-20');
+            }
+        });
+
+        // 11. SOCIAL PROOF LOGIC
+        const socialProofToast = document.getElementById('social-proof-toast');
+        const spText = document.getElementById('sp-text');
+        const barberNames = ["Barbearia Viking", "Studio Cortes", "Navalha Afiada", "Barber King", "Dom Pedro Barbearia", "Macho Alfa Studio"];
+        const plans = ["Plano Pro", "Plano Intermediário"];
+
+        function showSocialProof() {
+            const randomName = barberNames[Math.floor(Math.random() * barberNames.length)];
+            const randomPlan = plans[Math.floor(Math.random() * plans.length)];
+            spText.innerHTML = `<strong>${randomName}</strong> acabou de assinar o <strong>${randomPlan}</strong>`;
+            
+            socialProofToast.classList.remove('hidden-toast');
+            
+            setTimeout(() => {
+                socialProofToast.classList.add('hidden-toast');
+            }, 5000);
+        }
+
+        // Show first notification after 10s, then every 30-60s
+        setTimeout(showSocialProof, 10000);
+        setInterval(() => {
+            if(Math.random() > 0.5) showSocialProof();
+        }, 45000);
+
     </script>
 </body>
 </html>
-
