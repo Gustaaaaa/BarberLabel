@@ -748,9 +748,12 @@
                 <div class="reveal-wrapper">
                     <div class="tilt-card p-8 bg-barber-dark border border-white/5 hover:border-white/20 transition duration-300 flex flex-col h-full rounded relative overflow-hidden">
                         <span class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 mt-2">PLANO BÁSICO</span>
-                        <div class="mb-6 md:mb-8">
+                        <div class="mb-4">
                             <span class="text-2xl md:text-3xl font-bold text-white">R$ <span id="price-basic">69,90</span></span>
                             <div class="text-gray-500 text-xs mt-1" id="freq-basic">/mês</div>
+                        </div>
+                        <div class="mb-6 md:mb-8">
+                            <span class="inline-block bg-white/5 border border-white/10 rounded px-2 py-1 text-[10px] text-gray-400 font-medium">+ R$ 10,00 por barbeiro adicional</span>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-400 flex-1">
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> 1 Barbeiro</li>
@@ -768,9 +771,12 @@
                         <div class="absolute top-0 right-0 bg-barber-gold text-black text-[10px] font-bold px-3 py-1 uppercase tracking-widest rounded-bl">Recomendado</div>
                         
                         <span class="text-xs font-bold text-barber-gold uppercase tracking-widest mb-4">INTERMEDIÁRIO</span>
-                        <div class="mb-6 md:mb-8">
+                        <div class="mb-4">
                             <span class="text-3xl md:text-4xl font-bold text-white">R$ <span id="price-inter">89,90</span></span>
                             <div class="text-gray-500 text-sm mt-1" id="freq-inter">/mês</div>
+                        </div>
+                        <div class="mb-6 md:mb-8">
+                            <span class="inline-block bg-barber-gold/10 border border-barber-gold/20 rounded px-2 py-1 text-[10px] text-barber-gold font-medium">+ R$ 13,00 por barbeiro adicional</span>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-300 flex-1">
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Até 5 Barbeiros</li>
@@ -927,7 +933,7 @@
         </div>
     </section>
 
-    <footer class="bg-black py-10 md:py-16 border-t border-white/10">
+    <footer id="site-footer" class="bg-black py-10 md:py-16 border-t border-white/10">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
                 <img src="https://i.imgur.com/lEKpbTj.png" alt="BarberLabel Logo" class="h-8 md:h-10 w-auto object-contain grayscale hover:grayscale-0 transition duration-300">
@@ -1351,19 +1357,24 @@
         const heroSection = document.getElementById('hero-content');
         const whatsappFloat = document.getElementById('whatsapp-float'); // Novo ID
         const precosSection = document.getElementById('precos'); // Nova referência
+        const footerSection = document.getElementById('site-footer'); // Novo
 
         window.addEventListener('scroll', () => {
             const heroBottom = heroSection.getBoundingClientRect().bottom;
             const precosRect = precosSection.getBoundingClientRect();
+            const footerRect = footerSection.getBoundingClientRect(); // Novo
             
             // Check if Hero is past
             const isHeroPast = heroBottom < 0;
             
             // Check if Pricing Section is currently visible in viewport
             const isPrecosVisible = precosRect.top < window.innerHeight && precosRect.bottom > 0;
+
+            // Check if Footer is visible (reached bottom)
+            const isFooterVisible = footerRect.top < window.innerHeight; // Novo
             
-            // Show Sticky CTA only if Hero is past AND Pricing is NOT visible
-            if (isHeroPast && !isPrecosVisible) {
+            // Show Sticky CTA only if: Hero past AND Pricing NOT visible AND Footer NOT visible
+            if (isHeroPast && !isPrecosVisible && !isFooterVisible) {
                 stickyCta.classList.remove('translate-y-full');
                 // Adiciona classe para subir o WhatsApp no mobile
                 whatsappFloat.classList.add('mb-20');
@@ -1464,4 +1475,3 @@
     </script>
 </body>
 </html>
-
