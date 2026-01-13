@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="https://i.imgur.com/I9W5v26.png" type="image/png">
     <title>BarberLabel - Seu App, Sua Marca</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -779,7 +780,7 @@
                             <span class="inline-block bg-barber-gold/10 border border-barber-gold/20 rounded px-2 py-1 text-[10px] text-barber-gold font-medium">+ R$ 13,00 por barbeiro adicional</span>
                         </div>
                         <ul class="space-y-4 mb-8 md:mb-10 text-sm text-gray-300 flex-1">
-                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Até 5 Barbeiros</li>
+                            <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Até 3 Barbeiros</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Tudo do Básico</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Relatórios Financeiros</li>
                             <li class="flex items-center gap-3"><i class="fas fa-check text-barber-gold text-xs"></i> Notificações WhatsApp</li>
@@ -955,9 +956,10 @@
         <!-- RODAPÉ INFERIOR COM LINKS JURÍDICOS -->
         <div class="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left text-gray-600 text-[10px] tracking-widest uppercase">
             <div>BarberLabel &copy; 2026</div>
-            <div class="flex gap-6">
+            <div class="flex gap-6 flex-wrap justify-center">
                 <a href="#" onclick="openLegalModal('terms'); return false;" class="hover:text-barber-gold transition decoration-transparent">Termos de Serviço</a>
                 <a href="#" onclick="openLegalModal('conditions'); return false;" class="hover:text-barber-gold transition decoration-transparent">Condições de Uso</a>
+                <a href="#" onclick="openLegalModal('privacy'); return false;" class="hover:text-barber-gold transition decoration-transparent">Políticas de Privacidade</a>
             </div>
         </div>
     </footer>
@@ -1003,6 +1005,25 @@
                     
                     <p class="font-bold text-white mb-2 mt-4">5. Disponibilidade</p>
                     <p>Embora nos esforcemos para manter 99.9% de uptime, não garantimos que o serviço será ininterrupto ou livre de erros.</p>
+                `
+            },
+            privacy: {
+                title: "Políticas de Privacidade",
+                content: `
+                    <p class="font-bold text-white mb-2">1. Coleta de Informações</p>
+                    <p>Coletamos informações essenciais para o funcionamento da plataforma, incluindo, mas não se limitando a: nome, e-mail, número de telefone e dados comerciais da barbearia. Informações de pagamento são processadas externamente e não são armazenadas em nossos servidores.</p>
+                    
+                    <p class="font-bold text-white mb-2 mt-4">2. Uso das Informações</p>
+                    <p>As informações coletadas são utilizadas para: fornecer e manter o serviço, notificar sobre alterações, permitir suporte ao cliente e monitorar o uso do serviço para detecção de problemas técnicos.</p>
+
+                    <p class="font-bold text-white mb-2 mt-4">3. Proteção de Dados (LGPD)</p>
+                    <p>Em conformidade com a Lei Geral de Proteção de Dados (LGPD), adotamos medidas de segurança adequadas para proteger contra acesso não autorizado, alteração, divulgação ou destruição de seus dados pessoais.</p>
+
+                    <p class="font-bold text-white mb-2 mt-4">4. Compartilhamento de Dados</p>
+                    <p>Não vendemos, trocamos ou transferimos suas informações pessoais para terceiros, exceto quando necessário para a operação do serviço (ex: processadores de pagamento) ou quando exigido por lei.</p>
+                    
+                    <p class="font-bold text-white mb-2 mt-4">5. Cookies</p>
+                    <p>Utilizamos cookies para melhorar a experiência do usuário, entender como a plataforma é utilizada e personalizar conteúdo. Você pode configurar seu navegador para recusar cookies, mas isso pode limitar algumas funcionalidades.</p>
                 `
             }
         };
